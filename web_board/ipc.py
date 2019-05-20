@@ -84,6 +84,14 @@ class ScoreboardIPCClient:
     """IPC Client."""
 
     @staticmethod
+    async def do_ipc_call(call_type, **kwargs):
+        """Call."""
+        if not hasattr(ScoreboardIPCClient, call_type):
+            raise ScoreboardIPCError("invalid call type: {}".format(call_type))
+        function = getattr(ScoreboardIPCClient, call_type)
+        return await function(**kwargs)
+
+    @staticmethod
     @ipc_call()
     async def game_can_start(**kwargs):
         """Get whether game can be started."""

@@ -11,11 +11,41 @@ from quart import (
 )
 
 import asyncio
+import functools
 
 from web_board.ipc import ScoreboardIPCClient as ipc
 from web_board.ipc import ScoreboardIPCError
 
 bp = Blueprint("referee", __name__)
+
+
+def web_ipc_call(ipc_type, **deco_kwargs):
+    """Web API decorator to write less."""
+
+    def wrapper(func):
+        @functools.wraps(func)
+        async def wrapped(*args, **kwargs):
+            try:
+                data = await ipc.do_ipc_call(ipc_type, **deco_kwargs)
+                if isinstance(data, dict):
+                    data["status"] = "ok"
+                elif data is not None:
+                    data = {"status": "ok", "data": data}
+                else:
+                    data = {"status": "ok"}
+            except ScoreboardIPCError:
+                data = {"status": "error"}
+
+            # call function on data
+            ret = await func(data)
+            if ret is None:
+                ret = data
+
+            return jsonify(ret)
+
+        return wrapped
+
+    return wrapper
 
 
 @bp.route("/")
@@ -39,25 +69,15 @@ async def index():
 
 
 @bp.route("/status/game")
-async def game_status():
+@web_ipc_call("game_status")
+async def game_status(data):
     """Get game status."""
-    try:
-        data = await ipc.game_status()
-        data["status"] = "ok"
-    except ScoreboardIPCError:
-        data = {"status": "error"}
-    return jsonify(data)
 
 
 @bp.route("/status/players")
-async def player_status():
+@web_ipc_call("player_status")
+async def player_status(data):
     """Get player status."""
-    try:
-        data = await ipc.player_status()
-        data["status"] = "ok"
-    except ScoreboardIPCError:
-        data = {"status": "error"}
-    return jsonify(data)
 
 
 @bp.route("/status/can_start")
@@ -71,3 +91,15 @@ async def game_can_start():
         data = {"status": "error"}
 
     return jsonify(data)
+
+
+@bp.route("/control/gbegin")
+@web_ipc_call("game_begin")
+async def start_game(data):
+    """Start the game."""
+
+
+@bp.route("/control/gend")
+@web_ipc_call("game_end")
+async def end_game(data):
+    """End the game."""
