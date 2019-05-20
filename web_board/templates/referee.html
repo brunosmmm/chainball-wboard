@@ -427,7 +427,7 @@
             <label for="game-selector" class="col-form-label">Game Number:</label>
             <select class="form-control" id="game-selector">
               {% for game in gregistry %}
-              {% if game.status == "NYET" and game.tournament == gameData.tournament_id %}
+              {% if game.status == "NYET" and game.tournament == tournament_id %}
               <option data="{{game.identifier}}">{{game.sequence}}</option>
               {% endif %}
               {% endfor %}

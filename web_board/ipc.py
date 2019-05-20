@@ -60,7 +60,6 @@ async def _ipc_call(call_type: str, **kwargs):
     if status != "ok":
         raise ScoreboardIPCError("IPC error occurred", data)
 
-    print("got: {}".format(data))
     return data
 
 
@@ -169,8 +168,7 @@ class ScoreboardIPCClient:
     async def set_score(player_num: int = 0, score: int = 0, **kwargs):
         """Set score."""
 
-
-if __name__ == "__main__":
-    # quick test
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(ScoreboardIPCClient.update_registry())
+    @staticmethod
+    @ipc_call()
+    async def game_status(**kwargs):
+        """Get game status."""
