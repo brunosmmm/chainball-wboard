@@ -13,12 +13,13 @@ from quart import (
     abort,
 )
 
-
 import asyncio
 import functools
+from typing import Set
 
 from flask_login import login_user, logout_user, login_required, login_fresh
 
+from web_board import LOGIN_MANAGER
 from web_board.ipc import ScoreboardIPCClient as ipc
 from web_board.ipc import ScoreboardIPCError, ScoreboardIPCTimeoutError
 from web_board.utils import LoginForm, is_safe_url
@@ -26,11 +27,27 @@ from web_board.utils import LoginForm, is_safe_url
 bp = Blueprint("referee", __name__)
 
 
+class WebIPCCallRegistry:
+    """Registry of IPC functions."""
+
+    FN_NAMES: Set[str] = set()
+
+    def __init__(self, function):
+        """Initialize."""
+        WebIPCCallRegistry.FN_NAMES |= set(["referee." + function.__name__])
+
+    def __call__(self, function):
+        """Call."""
+        return function
+
+
 def web_ipc_call(**deco_kwargs):
     """Web API decorator to write less."""
 
     def wrapper(func):
         @functools.wraps(func)
+        @login_required
+        @WebIPCCallRegistry(func)
         async def wrapped(*args, **kwargs):
             ipc_type = func.__name__
             try:
@@ -41,7 +58,7 @@ def web_ipc_call(**deco_kwargs):
                     data = {"status": "ok", "data": data}
                 else:
                     data = {"status": "ok"}
-            except (ScoreboardIPCError):
+            except ScoreboardIPCError:
                 data = {"status": "error", "error": "request error"}
             except ScoreboardIPCTimeoutError:
                 data = {"status": "error", "error": "ipc timeout"}
@@ -58,7 +75,7 @@ def web_ipc_call(**deco_kwargs):
     return wrapper
 
 
-@bp.route("/referee")
+@bp.route("/")
 @login_required
 async def referee_index():
     """Referee panel."""
@@ -151,14 +168,12 @@ async def deactivate_tournament(data):
     """Deactivate tournament."""
 
 
-@bp.route("/", methods=["GET", "POST"])
+@bp.route("/login", methods=["GET", "POST"])
 async def login():
     """Log in."""
     currently_authenticated = (
         current_app.user_class.get_currently_authenticated()
     )
-    if currently_authenticated is not None and login_fresh():
-        return redirect(url_for("referee.referee_index"))
     form = LoginForm()
     if form.validate_on_submit():
         # verify user
@@ -180,7 +195,7 @@ async def login():
             if not is_safe_url(_next):
                 return await abort(400)
 
-            return redirect(_next or url_for("index"))
+            return redirect(_next or url_for("referee.referee_index"))
         await flash("Log in failed!")
     return await render_template("login.html", form=form)
 
@@ -193,4 +208,14 @@ def logout():
     user = current_app.user_class.get(username)
     user.is_authenticated = False
     logout_user()
-    return redirect(url_for("login"))
+    return redirect(url_for("referee.login"))
+
+
+@LOGIN_MANAGER.unauthorized_handler
+def unauthorized():
+    """Handle unauthorized access."""
+    # do stuff
+    if request.endpoint in WebIPCCallRegistry.FN_NAMES:
+        # IPC API call
+        return jsonify({"status": "error", "error": "unauthorized access"})
+    return redirect(url_for("referee.login"))
