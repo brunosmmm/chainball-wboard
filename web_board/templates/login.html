@@ -8,11 +8,26 @@
         <link href="/dist/main.css" rel='stylesheet' type='text/css' />
     </head>
     <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="#">Chainball Scoreboard</a>
+    </nav>
+    <div class="container">
+        <div class="card vertical-center">
+            <div class="card-body">
         <form method="POST" action="/login">
             {{ form.csrf_token }}
-            {{ form.user_name.label }} {{ form.user_name(size=20) }}
-            {{ form.password.label }} {{ form.password(size=20) }}
-            <input type="submit" value="Login">
+            <div class="form-group">
+                <label for="usernameInput">{{form.user_name.label}}</label>
+                {{ form.user_name(size=20, class_="form-control", id="usernameInput", placeholder="Enter username") }}
+            </div>
+            <div class="form-group">
+                <label for="passwordInput">{{form.password.label}}</label>
+                {{ form.password(size=20, class_="form-control", id="passwordInput", placeholder="Password") }}
+            </div>
+            <button type="submit" class="btn btn-primary">Log in</button>
         </form>
+            </div>
+        </div>
+    </div>
     </body>
 </html>
