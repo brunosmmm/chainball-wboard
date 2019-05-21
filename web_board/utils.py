@@ -1,7 +1,7 @@
 """Utilities."""
 
 from flask_wtf import FlaskForm
-from wtforms import StringField
+from wtforms import StringField, PasswordField
 from wtforms.validators import DataRequired
 from urllib.parse import urlparse, urljoin
 from quart import request, url_for
@@ -11,7 +11,7 @@ class LoginForm(FlaskForm):
     """Simple login form."""
 
     user_name = StringField("Username", validators=[DataRequired()])
-    password = StringField("Password", validators=[DataRequired()])
+    password = PasswordField("Password", validators=[DataRequired()])
 
 
 def is_safe_url(target):
