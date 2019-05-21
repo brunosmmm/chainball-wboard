@@ -8,13 +8,20 @@ from quart import (
     request,
     url_for,
     jsonify,
+    current_app,
+    flash,
+    abort,
 )
+
 
 import asyncio
 import functools
 
+from flask_login import login_user, logout_user, login_required
+
 from web_board.ipc import ScoreboardIPCClient as ipc
 from web_board.ipc import ScoreboardIPCError
+from web_board.utils import LoginForm, is_safe_url
 
 bp = Blueprint("referee", __name__)
 
@@ -49,8 +56,9 @@ def web_ipc_call(**deco_kwargs):
     return wrapper
 
 
-@bp.route("/")
-async def index():
+@bp.route("/referee")
+@login_required
+async def referee_index():
     """Referee panel."""
     preg = asyncio.ensure_future(ipc.retrieve_registry(registry_id="player"))
     greg = asyncio.ensure_future(ipc.retrieve_registry(registry_id="game"))
@@ -124,3 +132,37 @@ async def activate_tournament(tid):
 @web_ipc_call()
 async def deactivate_tournament(data):
     """Deactivate tournament."""
+
+
+@bp.route("/", methods=["GET", "POST"])
+async def login():
+    """Log in."""
+    form = LoginForm()
+    if form.validate_on_submit():
+        # verify user
+        user = current_app.user_class.get(form.user_name.data)
+        # verify password
+        if user is not None and current_app.bcrypt.check_password_hash(
+            user.password_hash, form.password.data
+        ):
+            # authenticate user
+            user.is_authenticated = True
+            login_user(user)
+
+            await flash("Log in successful.")
+
+            _next = request.args.get("next")
+            if not is_safe_url(_next):
+                return await abort(400)
+
+            return redirect(_next or url_for("index"))
+        await flash("Log in failed!")
+    return await render_template("login.html", form=form)
+
+
+@bp.route("/logout")
+@login_required
+def logout():
+    """Log out."""
+    logout_user()
+    return redirect(url_for("login"))
