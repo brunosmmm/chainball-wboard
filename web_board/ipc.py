@@ -37,10 +37,16 @@ class ScoreboardIPCError(Exception):
         return self._data
 
 
+class ScoreboardIPCTimeoutError(Exception):
+    """Timeout."""
+
+
 async def _ipc_call(call_type: str, **kwargs):
     """Call IPC."""
     ctx = Context.instance()
     socket = ctx.socket(zmq.REQ)
+    socket.setsockopt(zmq.RCVTIMEO, 100)
+    socket.setsockopt(zmq.LINGER, 0)
     socket.connect("tcp://127.0.0.1:5555")
     # send request
     try:
@@ -48,6 +54,9 @@ async def _ipc_call(call_type: str, **kwargs):
         await socket.send_multipart([json_data.encode()])
     except zmq.ZMQError:
         raise ScoreboardIPCError("could not call server")
+    except zmq.error.Again:
+        # timeout
+        raise ScoreboardIPCTimeoutError("connection timed out")
     # get response
     try:
         recv_data = await socket.recv_multipart()
@@ -56,6 +65,8 @@ async def _ipc_call(call_type: str, **kwargs):
         raise ScoreboardIPCError("could not receive data from server")
     except (json.JSONDecodeError, TypeError):
         raise ScoreboardIPCError("received malformed response")
+    except zmq.error.Again:
+        raise ScoreboardIPCTimeoutError("connection timed out")
     socket.close()
     if status != "ok":
         raise ScoreboardIPCError("IPC error occurred", data)

@@ -14,6 +14,7 @@ class User:
     """User."""
 
     _USERS: Dict = {}
+    _logged_in: str = None
 
     def __init__(
         self, user_name: str, pass_hash: str, anonymous: Optional[bool] = False
@@ -36,6 +37,12 @@ class User:
     @is_authenticated.setter
     def is_authenticated(self, value: bool):
         """Authenticate."""
+        if value:
+            if User._logged_in is not None:
+                raise RuntimeError("user already logged in")
+            User._logged_in = self._id
+        else:
+            User._logged_in = None
         self._authenticated = value
 
     @property
@@ -61,6 +68,11 @@ class User:
     def get(cls, user_id: str):
         """Get user object."""
         return cls._USERS.get(user_id)
+
+    @classmethod
+    def get_currently_authenticated(cls):
+        """Get currently authenticated user."""
+        return cls._logged_in
 
     @property
     def password_hash(self) -> str:
@@ -102,6 +114,7 @@ def create_app(test_config: Optional[str] = None):
 
     # secret key
     app.secret_key = b"__DEVELOPMENTPLACEHOLDER__"
+    LOGIN_MANAGER.login_view = "referee.login"
     LOGIN_MANAGER.init_app(app)
 
     return app

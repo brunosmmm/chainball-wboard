@@ -17,10 +17,10 @@ from quart import (
 import asyncio
 import functools
 
-from flask_login import login_user, logout_user, login_required
+from flask_login import login_user, logout_user, login_required, login_fresh
 
 from web_board.ipc import ScoreboardIPCClient as ipc
-from web_board.ipc import ScoreboardIPCError
+from web_board.ipc import ScoreboardIPCError, ScoreboardIPCTimeoutError
 from web_board.utils import LoginForm, is_safe_url
 
 bp = Blueprint("referee", __name__)
@@ -41,8 +41,10 @@ def web_ipc_call(**deco_kwargs):
                     data = {"status": "ok", "data": data}
                 else:
                     data = {"status": "ok"}
-            except ScoreboardIPCError:
-                data = {"status": "error"}
+            except (ScoreboardIPCError):
+                data = {"status": "error", "error": "request error"}
+            except ScoreboardIPCTimeoutError:
+                data = {"status": "error", "error": "ipc timeout"}
 
             # call function on data
             ret = await func(data)
@@ -67,15 +69,30 @@ async def referee_index():
     )
     tid_get = asyncio.ensure_future(ipc.tournament_active())
 
-    pregistry, gregistry, tregistry, tid = await asyncio.gather(
+    ret = await asyncio.gather(
         preg, greg, treg, tid_get, return_exceptions=True
     )
+
+    ipc_error = False
+    for item in ret:
+        if isinstance(item, Exception):
+            ipc_error = True
+            pregistry = []
+            gregistry = []
+            tregistry = []
+            tid = None
+            break
+
+    if ipc_error is False:
+        pregistry, gregistry, tregistry, tid = ret
+
     return await render_template(
         "referee.html",
         pregistry=pregistry,
         gregistry=gregistry,
         tregistry=tregistry,
         tournament_id=str(tid),
+        ipc_error=ipc_error,
     )
 
 
@@ -137,9 +154,17 @@ async def deactivate_tournament(data):
 @bp.route("/", methods=["GET", "POST"])
 async def login():
     """Log in."""
+    currently_authenticated = (
+        current_app.user_class.get_currently_authenticated()
+    )
+    if currently_authenticated is not None and login_fresh():
+        return redirect(url_for("referee.referee_index"))
     form = LoginForm()
     if form.validate_on_submit():
         # verify user
+        if form.user_name.data == currently_authenticated:
+            # deny
+            return await abort(401)
         user = current_app.user_class.get(form.user_name.data)
         # verify password
         if user is not None and current_app.bcrypt.check_password_hash(
@@ -164,5 +189,8 @@ async def login():
 @login_required
 def logout():
     """Log out."""
+    username = current_app.user_class.get_currently_authenticated()
+    user = current_app.user_class.get(username)
+    user.is_authenticated = False
     logout_user()
     return redirect(url_for("login"))
