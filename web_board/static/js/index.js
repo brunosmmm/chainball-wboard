@@ -59,6 +59,15 @@ function stopRefreshing()
     clearInterval(refreshTimer);
 }
 
+export function activateTournament(){
+    var tournament_id;
+    tournament_id = $("#tournament-selector").find(":selected").attr("data");
+    $.ajax({method: "GET", url: "/persist/tournament/"+tournament_id});
+}
+
+export function deactivateTournament(){
+    $.ajax({method: "GET", url: "/persist/tournament_off"});
+}
 // perform full refresh of view
 var currentGameStatus;
 function refreshStatus()
@@ -77,7 +86,7 @@ function refreshStatus()
                     $("#tournament-toggle").text("Activate tournament");
                     $("#tournament-toggle").attr("data-toggle", "modal");
                     $("#tournament-toggle").attr("data-target", "#tournamentModal");
-                    $("#tournament-toggle").removeAttr("onclick");
+                    $("#tournament-toggle").click(null);
                     $("#tournament-name").text("");
                     $("#tournamentDropdown").addClass("disabled");
                     var p;
@@ -90,7 +99,7 @@ function refreshStatus()
                     $("#tournament-toggle").text("Deactivate tournament");
                     $("#tournament-toggle").removeAttr("data-toggle");
                     $("#tournament-toggle").removeAttr("data-target");
-                    $("#tournament-toggle").attr("onclick", "deactivateTournament()");
+                    $("#tournament-toggle").click(deactivateTournament);
                     $("#tournament-name").text(result.tournament_str);
                     $("#tournamentDropdown").removeClass("disabled");
                     var p;
@@ -223,12 +232,3 @@ export function updateRegistry() {
     $.ajax({method: "GET", url: "/persist/update"});
 }
 
-export function activateTournament(){
-    var tournament_id;
-    tournament_id = $("#tournament-selector").find(":selected").attr("data");
-    $.ajax({method: "GET", url: "/persist/tournament/"+tournament_id});
-}
-
-export function deactivateTournament(){
-    $.ajax({method: "GET", url: "/persist/tournament_off"});
-}

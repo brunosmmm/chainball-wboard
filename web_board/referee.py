@@ -57,15 +57,17 @@ async def index():
     treg = asyncio.ensure_future(
         ipc.retrieve_registry(registry_id="tournament")
     )
+    tid_get = asyncio.ensure_future(ipc.tournament_active())
 
-    pregistry, gregistry, tregistry = await asyncio.gather(
-        preg, greg, treg, return_exceptions=True
+    pregistry, gregistry, tregistry, tid = await asyncio.gather(
+        preg, greg, treg, tid_get, return_exceptions=True
     )
     return await render_template(
         "referee.html",
         pregistry=pregistry,
         gregistry=gregistry,
         tregistry=tregistry,
+        tournament_id=str(tid),
     )
 
 
@@ -120,5 +122,5 @@ async def activate_tournament(tid):
 
 @bp.route("/persist/tournament_off")
 @web_ipc_call()
-async def deactivate_tournament():
+async def deactivate_tournament(data):
     """Deactivate tournament."""

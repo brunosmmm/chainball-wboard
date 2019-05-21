@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
-    <script src="/dist/bundle.js" type="text/javascript"></script>
+    <script src="/dist/bundle.js?3" type="text/javascript"></script>
     <link href="/dist/main.css" rel='stylesheet' type='text/css' />
   </head>
   <body onload="chainbot.startRefreshing()">
@@ -35,7 +35,7 @@
               Tournament
             </a>
             <div class="dropdown-menu" aria-labelledby="tournamentDropdown">
-              <a class="dropdown-item" href="#">Select game</a>
+              <a class="dropdown-item" href="#" data-toggle="modal" data-target="#gameModal">Select game</a>
             </div>
           </li>
         </ul>
@@ -75,22 +75,9 @@
                 <div class="dropdown">
                   <button type="button" class="btn btn-block btn-primary dropdown-toggle" id="scoreDropdownBtn0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="pscore-0">0</button>
                   <div class="dropdown-menu" aria-labelledby="scoreDropdownBtn0">
-                    <a class="dropdown-item" href="#">-10</a>
-                    <a class="dropdown-item" href="#">-9</a>
-                    <a class="dropdown-item" href="#">-8</a>
-                    <a class="dropdown-item" href="#">-7</a>
-                    <a class="dropdown-item" href="#">-6</a>
-                    <a class="dropdown-item" href="#">-5</a>
-                    <a class="dropdown-item" href="#">-4</a>
-                    <a class="dropdown-item" href="#">-3</a>
-                    <a class="dropdown-item" href="#">-2</a>
-                    <a class="dropdown-item" href="#">-1</a>
-                    <a class="dropdown-item" href="#">0</a>
-                    <a class="dropdown-item" href="#">1</a>
-                    <a class="dropdown-item" href="#">2</a>
-                    <a class="dropdown-item" href="#">3</a>
-                    <a class="dropdown-item" href="#">4</a>
-                    <a class="dropdown-item" href="#">5</a>
+                    {% for i in range(-10, 6) %}
+                    <a class="dropdown-item" href="#">{{i}}</a>
+                    {% endfor %}
                   </div>
                 </div>
               </div>
@@ -147,22 +134,9 @@
                 <div class="dropdown">
                   <button type="button" class="btn btn-block btn-primary dropdown-toggle" id="scoreDropdownBtn1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="pscore-1">0</button>
                   <div class="dropdown-menu" aria-labelledby="scoreDropdownBtn1">
-                    <a class="dropdown-item" href="#">-10</a>
-                    <a class="dropdown-item" href="#">-9</a>
-                    <a class="dropdown-item" href="#">-8</a>
-                    <a class="dropdown-item" href="#">-7</a>
-                    <a class="dropdown-item" href="#">-6</a>
-                    <a class="dropdown-item" href="#">-5</a>
-                    <a class="dropdown-item" href="#">-4</a>
-                    <a class="dropdown-item" href="#">-3</a>
-                    <a class="dropdown-item" href="#">-2</a>
-                    <a class="dropdown-item" href="#">-1</a>
-                    <a class="dropdown-item" href="#">0</a>
-                    <a class="dropdown-item" href="#">1</a>
-                    <a class="dropdown-item" href="#">2</a>
-                    <a class="dropdown-item" href="#">3</a>
-                    <a class="dropdown-item" href="#">4</a>
-                    <a class="dropdown-item" href="#">5</a>
+                      {% for i in range(-10, 6) %}
+                      <a class="dropdown-item" href="#">{{i}}</a>
+                      {% endfor %}
                   </div>
                 </div>
               </div>
@@ -219,22 +193,9 @@
                 <div class="dropdown">
                   <button type="button" class="btn btn-block btn-primary dropdown-toggle" id="scoreDropdownBtn2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="pscore-2">0</button>
                   <div class="dropdown-menu" aria-labelledby="scoreDropdownBtn2">
-                    <a class="dropdown-item" href="#">-10</a>
-                    <a class="dropdown-item" href="#">-9</a>
-                    <a class="dropdown-item" href="#">-8</a>
-                    <a class="dropdown-item" href="#">-7</a>
-                    <a class="dropdown-item" href="#">-6</a>
-                    <a class="dropdown-item" href="#">-5</a>
-                    <a class="dropdown-item" href="#">-4</a>
-                    <a class="dropdown-item" href="#">-3</a>
-                    <a class="dropdown-item" href="#">-2</a>
-                    <a class="dropdown-item" href="#">-1</a>
-                    <a class="dropdown-item" href="#">0</a>
-                    <a class="dropdown-item" href="#">1</a>
-                    <a class="dropdown-item" href="#">2</a>
-                    <a class="dropdown-item" href="#">3</a>
-                    <a class="dropdown-item" href="#">4</a>
-                    <a class="dropdown-item" href="#">5</a>
+                      {% for i in range(-10, 6) %}
+                      <a class="dropdown-item" href="#">{{i}}</a>
+                      {% endfor %}
                   </div>
                 </div>
               </div>
@@ -291,22 +252,9 @@
                 <div class="dropdown">
                   <button type="button" class="btn btn-block btn-primary dropdown-toggle" id="scoreDropdownBtn3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="pscore-3">0</button>
                   <div class="dropdown-menu" aria-labelledby="scoreDropdownBtn3">
-                    <a class="dropdown-item" href="#">-10</a>
-                    <a class="dropdown-item" href="#">-9</a>
-                    <a class="dropdown-item" href="#">-8</a>
-                    <a class="dropdown-item" href="#">-7</a>
-                    <a class="dropdown-item" href="#">-6</a>
-                    <a class="dropdown-item" href="#">-5</a>
-                    <a class="dropdown-item" href="#">-4</a>
-                    <a class="dropdown-item" href="#">-3</a>
-                    <a class="dropdown-item" href="#">-2</a>
-                    <a class="dropdown-item" href="#">-1</a>
-                    <a class="dropdown-item" href="#">0</a>
-                    <a class="dropdown-item" href="#">1</a>
-                    <a class="dropdown-item" href="#">2</a>
-                    <a class="dropdown-item" href="#">3</a>
-                    <a class="dropdown-item" href="#">4</a>
-                    <a class="dropdown-item" href="#">5</a>
+                      {% for i in range(-10, 6) %}
+                      <a class="dropdown-item" href="#">{{i}}</a>
+                      {% endfor %}
                   </div>
                 </div>
               </div>
@@ -416,7 +364,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="gameModalLabel">Select game</h5>
+        <h5 class="modal-title" id="gameModalLabel">Select A game</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -427,8 +375,8 @@
             <label for="game-selector" class="col-form-label">Game Number:</label>
             <select class="form-control" id="game-selector">
               {% for game in gregistry %}
-              {% if game.status == "NYET" and game.tournament == tournament_id %}
-              <option data="{{game.identifier}}">{{game.sequence}}</option>
+              {% if tournament_id == game.tournament %}
+                <option>{{game.sequence}}</option>
               {% endif %}
               {% endfor %}
             </select>
