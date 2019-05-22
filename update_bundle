@@ -1,0 +1,141 @@
+#!/usr/bin/env python3
+"""Update js/css."""
+
+import re
+import os
+import json
+import hashlib
+
+BUNDLE_REGEX = re.compile(
+    r'^\s*<\s*script\s+src\s*=\s*".+bundle\.js(\?([0-9]+))?.*$'
+)
+TEMPLATE_PATH = "web_board/templates"
+BUNDLE_PATH = "web_board/static/dist/bundle.js"
+CSS_PATH = "web_board/static/dist/main.css"
+BUNDLE_CHECKPOINT = ".bundle-checkpoint"
+
+
+def md5(fname):
+    """Get MD5 sum."""
+    hash_md5 = hashlib.md5()
+    with open(fname, "rb") as f:
+        for chunk in iter(lambda: f.read(4096), b""):
+            hash_md5.update(chunk)
+    return hash_md5.hexdigest()
+
+
+if __name__ == "__main__":
+
+    # check that bundle needs updating
+    checkpoint_path = os.path.join(os.getcwd(), BUNDLE_CHECKPOINT)
+    checkpoint_data = {"bundle_md5": None, "css_md5": None}
+    if not os.path.exists(checkpoint_path):
+        # create checkpoint
+        try:
+            with open(checkpoint_path, "w") as checkpoint_file:
+                json.dump(checkpoint_data, checkpoint_file)
+        except OSError:
+            print("ERROR: cannot create checkpoint")
+            exit(1)
+    else:
+        # load
+        try:
+            with open(checkpoint_path, "r") as checkpoint_file:
+                checkpoint_data = json.load(checkpoint_file)
+                if "bundle_md5" not in checkpoint_data:
+                    checkpoint_data["bundle_md5"] = None
+                if "css_md5" not in checkpoint_data:
+                    checkpoint_data["css_md5"] = None
+
+        except (json.JSONDecodeError, OSError):
+            print("ERROR: cannot load checkpoint")
+            exit(1)
+
+    # verify existence
+    FULL_BUNDLE_PATH = os.path.join(os.getcwd(), BUNDLE_PATH)
+    if not os.path.exists(FULL_BUNDLE_PATH):
+        print("ERROR: cannot find bundle.js")
+        exit(1)
+
+    FULL_CSS_PATH = os.path.join(os.getcwd(), CSS_PATH)
+    if not os.path.exists(FULL_CSS_PATH):
+        print("ERROR: cannot find main.css")
+        exit(1)
+
+    # get MD5 sums
+    BUNDLE_MD5 = md5(FULL_BUNDLE_PATH)
+    CSS_MD5 = md5(FULL_CSS_PATH)
+
+    if (
+        BUNDLE_MD5 == checkpoint_data["bundle_md5"]
+        and CSS_MD5 == checkpoint_data["css_md5"]
+    ):
+        print("INFO: will not update templates")
+        exit(0)
+
+    full_template_path = os.path.join(os.getcwd(), TEMPLATE_PATH)
+    if not os.path.exists(full_template_path) or not os.path.isdir(
+        full_template_path
+    ):
+        print("ERROR: template path not found")
+        exit(1)
+
+    templates = os.listdir(full_template_path)
+    if not templates:
+        print("ERROR: no templates found")
+        exit(1)
+
+    for template in templates:
+        print("updating template {}".format(template))
+        try:
+            with open(os.path.join(full_template_path, template)) as _template:
+                contents = _template.readlines()
+                found_bundle = False
+                found_css = False
+                updated_contents = []
+                for line in contents:
+                    match = BUNDLE_REGEX.match(line)
+                    if match is not None:
+                        if found_bundle is True:
+                            print("ERROR: double usage of bundle.js")
+                            continue
+                        found_bundle = True
+                        if match.group(1) is not None:
+                            try:
+                                current_count = int(match.group(2))
+                            except ValueError:
+                                print("ERROR: failed to update version")
+                            current_count += 1
+                        else:
+                            current_count = 1
+                        # replace
+                        updated_line = re.sub(
+                            r"bundle.js(\?[0-9]+)?",
+                            "bundle.js?{}".format(current_count),
+                            line,
+                        )
+                        updated_contents.append(updated_line)
+                    else:
+                        updated_contents.append(line)
+                        continue
+
+            if found_bundle is False:
+                print("WARNING: did not find usage of bundle.js")
+
+            if found_css or found_bundle:
+                with open(
+                    os.path.join(full_template_path, template), "w"
+                ) as _template:
+                    _template.writelines(updated_contents)
+        except OSError:
+            print("ERROR: could not open {}".format(template))
+
+    # write checkpoint
+    checkpoint_data["bundle_md5"] = BUNDLE_MD5
+    checkpoint_data["css_md5"] = CSS_MD5
+    try:
+        with open(checkpoint_path, "w") as checkpoint_file:
+            json.dump(checkpoint_data, checkpoint_file)
+    except OSError:
+        print("ERROR: could not save checkpoint")
+        exit(1)
