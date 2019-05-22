@@ -150,7 +150,7 @@ async def game_end(data):
     """End the game."""
 
 
-@bp.route("/persist/tournament/<tid>")
+@bp.route("/control/activateTournament/<tid>")
 async def activate_tournament(tid):
     """Activate tournament."""
     try:
@@ -162,10 +162,24 @@ async def activate_tournament(tid):
     return jsonify(data)
 
 
-@bp.route("/persist/tournament_off")
+@bp.route("/control/deactivateTournament")
 @web_ipc_call()
 async def deactivate_tournament(data):
     """Deactivate tournament."""
+
+
+@bp.route("/control/activateGame/<gid>")
+async def activate_game(gid):
+    """Activate game."""
+    try:
+        await ipc.activate_game(game_id=int(gid))
+        data = {"status": "ok"}
+    except ScoreboardIPCError:
+        data = {"status": "error"}
+    except ValueError:
+        data = {"status": "error", "error": "invalid game id"}
+
+    return jsonify(data)
 
 
 @bp.route("/login", methods=["GET", "POST"])

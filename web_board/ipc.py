@@ -134,6 +134,11 @@ class ScoreboardIPCClient:
 
     @staticmethod
     @ipc_call()
+    async def activate_game(**kwargs):
+        """Actvivate game."""
+
+    @staticmethod
+    @ipc_call()
     async def update_registry(**kwargs):
         """Update registry."""
 
