@@ -84,10 +84,10 @@ async def referee_index():
     treg = asyncio.ensure_future(
         ipc.retrieve_registry(registry_id="tournament")
     )
-    tid_get = asyncio.ensure_future(ipc.tournament_active())
+    gamestatus = asyncio.ensure_future(ipc.game_status())
 
     ret = await asyncio.gather(
-        preg, greg, treg, tid_get, return_exceptions=True
+        preg, greg, treg, gamestatus, return_exceptions=True
     )
 
     ipc_error = False
@@ -97,18 +97,21 @@ async def referee_index():
             pregistry = []
             gregistry = []
             tregistry = []
-            tid = None
+            status = {}
             break
 
     if ipc_error is False:
-        pregistry, gregistry, tregistry, tid = ret
+        pregistry, gregistry, tregistry, status = ret
+        pregistry = {player["username"]: player for player in pregistry}
+        gregistry = {game["identifier"]: game for game in gregistry}
+        tregistry = {tournament["id"]: tournament for tournament in tregistry}
 
     return await render_template(
         "referee.html",
         pregistry=pregistry,
         gregistry=gregistry,
         tregistry=tregistry,
-        tournament_id=tid,
+        gstatus=status,
         ipc_error=ipc_error,
     )
 
