@@ -108,7 +108,7 @@ async def referee_index():
         pregistry=pregistry,
         gregistry=gregistry,
         tregistry=tregistry,
-        tournament_id=str(tid),
+        tournament_id=tid,
         ipc_error=ipc_error,
     )
 

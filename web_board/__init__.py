@@ -9,6 +9,8 @@ from flask_bcrypt import Bcrypt
 
 LOGIN_MANAGER = LoginManager()
 
+DEVELOP = True
+
 
 class User:
     """User."""
@@ -115,6 +117,8 @@ def create_app(test_config: Optional[str] = None):
     # secret key
     app.secret_key = b"__DEVELOPMENTPLACEHOLDER__"
     LOGIN_MANAGER.login_view = "referee.login"
+    if DEVELOP is True:
+        app.config["LOGIN_DISABLED"] = True
     LOGIN_MANAGER.init_app(app)
 
     return app
