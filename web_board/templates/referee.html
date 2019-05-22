@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
-    <script src="/dist/bundle.js?6" type="text/javascript"></script>
+    <script src="/dist/bundle.js?8" type="text/javascript"></script>
     <link href="/dist/main.css" rel='stylesheet' type='text/css' />
   </head>
   <body onload="chainbot.startRefreshing()">
@@ -376,7 +376,7 @@
             <select class="form-control" id="game-selector">
               {% for game in gregistry %}
               {% if tournament_id == game["tournament"] %}
-                <option>{{game["sequence"]}}</option>
+                <option data="{{game["identifier"]}}">{{game["sequence"]}}</option>
               {% endif %}
               {% endfor %}
             </select>
@@ -385,7 +385,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="chainbot.activateTournament()">Activate</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="chainbot.activateGame()">Activate</button>
       </div>
     </div>
   </div>

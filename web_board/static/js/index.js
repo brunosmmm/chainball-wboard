@@ -62,13 +62,13 @@ function stopRefreshing()
 export function activateTournament(){
     var tournament_id;
     tournament_id = $("#tournament-selector").find(":selected").attr("data");
-    $.ajax({method: "GET", url: "/persist/tournament/"+tournament_id});
+    $.ajax({method: "GET", url: "/control/activateTournament/"+tournament_id});
     // reload
     window.location.reload(true);
 }
 
 export function deactivateTournament(){
-    $.ajax({method: "GET", url: "/persist/tournament_off"});
+    $.ajax({method: "GET", url: "/control/deactivateTournament"});
 }
 // perform full refresh of view
 var currentGameStatus;
@@ -234,3 +234,10 @@ export function updateRegistry() {
     $.ajax({method: "GET", url: "/persist/update"});
 }
 
+export function activateGame(){
+    var game_id;
+    game_id = $("#game-selector").find(":selected").attr("data");
+    $.ajax({method: "GET", url: "/control/activateGame/"+game_id});
+    // reload
+    window.location.reload(true);
+}
