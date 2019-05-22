@@ -106,7 +106,13 @@ function refreshStatus()
                     $("#tournamentDropdown").removeClass("disabled");
                     var p;
                     for(p=0;p<4;p++) {
-                        $("#player-add-"+p).addClass("disabled");
+                        if (!result.game_id) {
+                            $("#player-add-"+p).addClass("disabled");
+                        }
+                        else
+                        {
+                            $("#player-add-"+p).removeClass("disabled");
+                        }
                     }
                 }
                 if (result.game != "stopped") {

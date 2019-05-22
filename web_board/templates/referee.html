@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
-    <script src="/dist/bundle.js?8" type="text/javascript"></script>
+    <script src="/dist/bundle.js?9" type="text/javascript"></script>
     <link href="/dist/main.css" rel='stylesheet' type='text/css' />
   </head>
   <body onload="chainbot.startRefreshing()">
@@ -316,8 +316,11 @@
           <div class="form-group">
             <label for="player-selector" class="col-form-label">Player:</label>
             <select class="form-control" id="player-selector">
-              {% for player in pregistry %}
-              <option id="playerSelector-{{player.username}}">{{player.name}}</option>
+              {% for player in pregistry.values() %}
+                {% if not gstatus.tournament or
+                   (gstatus.game_id is not none and player.username in gregistry[gstatus.game_id].players) %}
+                <option id="playerSelector-{{player.username}}">{{player.name}}</option>
+              {% endif %}
               {% endfor %}
             </select>
           </div>
@@ -345,7 +348,7 @@
           <div class="form-group">
             <label for="tournament-selector" class="col-form-label">Tournament:</label>
             <select class="form-control" id="tournament-selector">
-              {% for tournament in tregistry %}
+              {% for tournament in tregistry.values() %}
               <option data="{{tournament.id}}">{{tournament.season}} {{tournament.description}}</option>
               {% endfor %}
             </select>
@@ -374,8 +377,8 @@
           <div class="form-group">
             <label for="game-selector" class="col-form-label">Game Number:</label>
             <select class="form-control" id="game-selector">
-              {% for game in gregistry %}
-              {% if tournament_id == game["tournament"] %}
+              {% for game in gregistry.values() %}
+              {% if gstatus.tournament_id == game["tournament"] %}
                 <option data="{{game["identifier"]}}">{{game["sequence"]}}</option>
               {% endif %}
               {% endfor %}
