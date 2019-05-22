@@ -63,6 +63,8 @@ export function activateTournament(){
     var tournament_id;
     tournament_id = $("#tournament-selector").find(":selected").attr("data");
     $.ajax({method: "GET", url: "/persist/tournament/"+tournament_id});
+    // reload
+    window.location.reload(true);
 }
 
 export function deactivateTournament(){
