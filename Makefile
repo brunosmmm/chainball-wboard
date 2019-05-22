@@ -6,4 +6,4 @@ SOURCE_FILES:=$(STATIC_PATH)/js/index.js $(STATIC_PATH)/webpack.config.js $(STAT
 all: $(DIST_FILES)
 
 $(DIST_FILES): $(SOURCE_FILES)
-	cd $(STATIC_PATH) && npm run build && ./update_bundle
+	cd $(STATIC_PATH) && npm run build && cd ../.. && ./update_bundle
