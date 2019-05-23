@@ -5,8 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
-    <script src="/dist/bundle.js?9" type="text/javascript"></script>
+    <script src="/dist/bundle.js?11" type="text/javascript"></script>
     <link href="/dist/main.css" rel='stylesheet' type='text/css' />
+    <script>
+     $(document).ready(function () {
+     $('#playerAddModal').on('shown.bs.modal', function (event) {
+         var button = $(event.relatedTarget); // Button that triggered the modal
+         var recipient = button.data('playernum'); // Extract info from data-* attributes
+         $("#player-selector").attr("curplayernum", recipient);
+     })
+     })
+    </script>
   </head>
   <body onload="chainbot.startRefreshing()">
 	  <!--content-starts-->
@@ -64,7 +73,7 @@
                     <span class="sr-only">Toggle Dropdown</span>
                   </button>
                   <div class="dropdown-menu">
-                    <a id="player-add-0" class="dropdown-item" href="#" data-toggle="modal" data-target="#playerAddModal" data-whatever="0">Add Player</a>
+                    <a id="player-add-0" class="dropdown-item" href="#" data-toggle="modal" data-target="#playerAddModal" data-playernum="0">Add Player</a>
                     <a class="dropdown-item disabled" href="#" onclick="rmPlayer(0)">Remove Player</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item disabled" href="#" onclick="pairRemote(0)">Pair Remote</a>
@@ -123,7 +132,7 @@
                     <span class="sr-only">Toggle Dropdown</span>
                   </button>
                   <div class="dropdown-menu">
-                    <a id="player-add-1" class="dropdown-item" href="#" onclick="addPlayer(1)">Add Player</a>
+                      <a id="player-add-1" class="dropdown-item" href="#" data-toggle="modal" data-target="#playerAddModal" data-playernum="1">Add Player</a>
                     <a class="dropdown-item disabled" href="#" onclick="rmPlayer(1)">Remove Player</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item disabled" href="#" onclick="pairRemote(1)">Pair Remote</a>
@@ -182,7 +191,7 @@
                     <span class="sr-only">Toggle Dropdown</span>
                   </button>
                   <div class="dropdown-menu">
-                    <a id="player-add-2" class="dropdown-item" href="#" onclick="addPlayer(2)">Add Player</a>
+                      <a id="player-add-2" class="dropdown-item" href="#" data-toggle="modal" data-target="#playerAddModal" data-playernum="2">Add Player</a>
                     <a class="dropdown-item disabled" href="#" onclick="rmPlayer(2)">Remove Player</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item disabled" href="#" onclick="pairRemote(2)">Pair Remote</a>
@@ -241,7 +250,7 @@
                     <span class="sr-only">Toggle Dropdown</span>
                   </button>
                   <div class="dropdown-menu">
-                    <a id="player-add-3" class="dropdown-item" href="#" onclick="addPlayer(3)">Add Player</a>
+                      <a id="player-add-3" class="dropdown-item" href="#" data-toggle="modal" data-target="#playerAddModal" data-playernum="3">Add Player</a>
                     <a class="dropdown-item disabled" href="#" onclick="rmPlayer(3)">Remove Player</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item disabled" href="#" onclick="pairRemote(3)">Pair Remote</a>
@@ -319,7 +328,7 @@
               {% for player in pregistry.values() %}
                 {% if not gstatus.tournament or
                    (gstatus.game_id is not none and player.username in gregistry[gstatus.game_id].players) %}
-                <option id="playerSelector-{{player.username}}">{{player.name}}</option>
+                <option id="playerSelector-{{player.username}}" data="{{player.username}}" {{"disabled" if player in registered_players else ""}}>{{player.name}}</option>
               {% endif %}
               {% endfor %}
             </select>
@@ -328,7 +337,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary">Add</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="chainbot.addPlayer()">Add</button>
       </div>
     </div>
   </div>

@@ -85,9 +85,10 @@ async def referee_index():
         ipc.retrieve_registry(registry_id="tournament")
     )
     gamestatus = asyncio.ensure_future(ipc.game_status())
+    playerstatus = asyncio.ensure_future(ipc.player_status())
 
     ret = await asyncio.gather(
-        preg, greg, treg, gamestatus, return_exceptions=True
+        preg, greg, treg, gamestatus, playerstatus, return_exceptions=True
     )
 
     ipc_error = False
@@ -97,11 +98,12 @@ async def referee_index():
             pregistry = []
             gregistry = []
             tregistry = []
-            status = {}
+            gstatus = {}
+            pstatus = {}
             break
 
     if ipc_error is False:
-        pregistry, gregistry, tregistry, status = ret
+        pregistry, gregistry, tregistry, gstatus, pstatus = ret
         pregistry = {player["username"]: player for player in pregistry}
         gregistry = {game["identifier"]: game for game in gregistry}
         tregistry = {tournament["id"]: tournament for tournament in tregistry}
@@ -111,7 +113,9 @@ async def referee_index():
         pregistry=pregistry,
         gregistry=gregistry,
         tregistry=tregistry,
-        gstatus=status,
+        gstatus=gstatus,
+        pstatus=pstatus,
+        registered_players=[player["username"] for player in pstatus.values()],
         ipc_error=ipc_error,
     )
 
@@ -154,6 +158,7 @@ async def game_end(data):
 
 
 @bp.route("/control/activateTournament/<tid>")
+@login_required
 async def activate_tournament(tid):
     """Activate tournament."""
     try:
@@ -172,6 +177,7 @@ async def deactivate_tournament(data):
 
 
 @bp.route("/control/activateGame/<gid>")
+@login_required
 async def activate_game(gid):
     """Activate game."""
     try:
@@ -181,6 +187,27 @@ async def activate_game(gid):
         data = {"status": "error"}
     except ValueError:
         data = {"status": "error", "error": "invalid game id"}
+
+    return jsonify(data)
+
+
+@bp.route("/control/pregister/<pnum>,<pid>", methods=["GET"])
+@login_required
+async def register_player(pnum, pid):
+    """Register player."""
+    # perform minimal checking
+    try:
+        player_num = int(pnum)
+        if player_num < 0 or player_num > 3:
+            raise ValueError
+    except ValueError:
+        return {"status": "error", "error": "invalid player number"}
+
+    try:
+        await ipc.player_register(username=pid, player_num=player_num)
+        data = {"status": "ok"}
+    except ScoreboardIPCError:
+        data = {"status": "error"}
 
     return jsonify(data)
 
