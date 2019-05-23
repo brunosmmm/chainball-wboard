@@ -228,8 +228,19 @@ export function pnameClick(playerNum) {
     }
 }
 
-function addPlayer(playerNum, username) {
+export function addPlayer() {
+    var player_id, player_num;
+    player_id = $("#player-selector").find(":selected").attr("data");
+    player_num = $("#player-selector").attr("curplayernum");
 
+    // in case of success, disable the entry
+    $.ajax({
+        method: "GET",
+        url: "/control/pregister/"+player_num+","+player_id,
+        success: function() {
+            $("#playerSelector-"+player_id).prop("disabled", true);
+        }
+    });
 }
 function rmPlayer(playerNum) {}
 function pairRemote(playerNum) {}
@@ -247,3 +258,5 @@ export function activateGame(){
     // reload
     window.location.reload(true);
 }
+
+window.$ = $;
