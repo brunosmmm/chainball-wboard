@@ -238,15 +238,20 @@ export function addPlayer() {
     $.ajax({
         method: "GET",
         url: "/control/pregister/"+player_num+","+player_id,
+        success: function() {
+            window.location.reload(true);
+        }
     });
-    window.location.reload(true);
 }
 
 export function rmPlayer(playerNum) {
     $.ajax({
         method: "GET",
-        url: "/control/punregister/"+playerNum
-    })
+        url: "/control/punregister/"+playerNum,
+        success: function() {
+            window.location.reload(true);
+        }
+    });
 }
 function pairRemote(playerNum) {}
 

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
-    <script src="/dist/bundle.js?21" type="text/javascript"></script>
+    <script src="/dist/bundle.js?22" type="text/javascript"></script>
     <link href="/dist/main.css" rel='stylesheet' type='text/css' />
     <script>
      $(document).ready(function () {
@@ -68,13 +68,16 @@
               <!-- TODO put template here -->
               <div class="col-3">
                 <div class="btn-group btn-block">
-                  <button type="button" class="btn btn-primary btn-block" id="pline-0" onclick="pnameClick(0)">---</button>
+                  <button type="button" class="btn btn-primary btn-block" id="pline-0" onclick="pnameClick(0)"></button>
                   <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="pline-0-drop">
                     <span class="sr-only">Toggle Dropdown</span>
                   </button>
                   <div class="dropdown-menu">
-                    <a id="player-add-0" class="dropdown-item" href="#" data-toggle="modal" data-target="#playerAddModal" data-playernum="0">Add Player</a>
-                    <a class="dropdown-item disabled" href="#" onclick="chainbot.rmPlayer(0)">Remove Player</a>
+                    {% if not pstatus["0"].registered %}
+                      <a id="player-add-0" class="dropdown-item" href="#" data-toggle="modal" data-target="#playerAddModal" data-playernum="0">Add Player</a>
+                    {% else %}
+                      <a class="dropdown-item" href="#" onclick="chainbot.rmPlayer(0)">Remove Player</a>
+                      {% endif %}
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item disabled" href="#" onclick="pairRemote(0)">Pair Remote</a>
                   </div>
@@ -127,13 +130,16 @@
               <!-- TODO put template here -->
               <div class="col-3">
                 <div class="btn-group btn-block">
-                  <button type="button" class="btn btn-primary btn-block" id="pline-1" onclick="pnameClick(1)">---</button>
+                  <button type="button" class="btn btn-primary btn-block" id="pline-1" onclick="pnameClick(1)"></button>
                   <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="pline-1-drop">
                     <span class="sr-only">Toggle Dropdown</span>
                   </button>
                   <div class="dropdown-menu">
+                      {% if not pstatus["1"].registered %}
                       <a id="player-add-1" class="dropdown-item" href="#" data-toggle="modal" data-target="#playerAddModal" data-playernum="1">Add Player</a>
-                    <a class="dropdown-item disabled" href="#" onclick="chainbot.rmPlayer(1)">Remove Player</a>
+                      {% else %}
+                    <a class="dropdown-item" href="#" onclick="chainbot.rmPlayer(1)">Remove Player</a>
+                    {% endif %}
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item disabled" href="#" onclick="pairRemote(1)">Pair Remote</a>
                   </div>
@@ -186,13 +192,16 @@
               <!-- TODO put template here -->
               <div class="col-3">
                 <div class="btn-group btn-block">
-                  <button type="button" class="btn btn-primary btn-block" id="pline-2" onclick="pnameClick(2)">---</button>
+                  <button type="button" class="btn btn-primary btn-block" id="pline-2" onclick="pnameClick(2)"></button>
                   <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="pline-2-drop">
                     <span class="sr-only">Toggle Dropdown</span>
                   </button>
                   <div class="dropdown-menu">
+                      {% if not pstatus["2"].registered %}
                       <a id="player-add-2" class="dropdown-item" href="#" data-toggle="modal" data-target="#playerAddModal" data-playernum="2">Add Player</a>
-                    <a class="dropdown-item disabled" href="#" onclick="chainbot.rmPlayer(2)">Remove Player</a>
+                      {% else %}
+                    <a class="dropdown-item" href="#" onclick="chainbot.rmPlayer(2)">Remove Player</a>
+                    {% endif %}
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item disabled" href="#" onclick="pairRemote(2)">Pair Remote</a>
                   </div>
@@ -245,13 +254,16 @@
               <!-- TODO put template here -->
               <div class="col-3">
                 <div class="btn-group btn-block">
-                  <button type="button" class="btn btn-primary btn-block" id="pline-3" onclick="pnameClick(3)">---</button>
+                  <button type="button" class="btn btn-primary btn-block" id="pline-3" onclick="pnameClick(3)"></button>
                   <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="pline-3-drop">
                     <span class="sr-only">Toggle Dropdown</span>
                   </button>
                   <div class="dropdown-menu">
+                      {% if not pstatus["3"].registered %}
                       <a id="player-add-3" class="dropdown-item" href="#" data-toggle="modal" data-target="#playerAddModal" data-playernum="3">Add Player</a>
-                    <a class="dropdown-item disabled" href="#" onclick="chainbot.rmPlayer(3)">Remove Player</a>
+                      {% else %}
+                      <a class="droopdown-item" href="#" onclick="chainbot.rmPlayer(3)">Remove Player</a>
+                      {% endif %}
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item disabled" href="#" onclick="pairRemote(3)">Pair Remote</a>
                   </div>
