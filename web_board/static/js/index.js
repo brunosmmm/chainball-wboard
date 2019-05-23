@@ -229,18 +229,17 @@ export function pnameClick(playerNum) {
 }
 
 export function addPlayer() {
-    var player_id, player_num;
-    player_id = $("#player-selector").find(":selected").attr("data");
+    var player_id_element, player_id, player_num;
+    player_id_element = $("#player-selector").find(":selected");
+    player_id = player_id_element.attr("data");
     player_num = $("#player-selector").attr("curplayernum");
 
-    // in case of success, disable the entry
+    //in case of success, disable the entry
     $.ajax({
         method: "GET",
         url: "/control/pregister/"+player_num+","+player_id,
-        success: function() {
-            $("#playerSelector-"+player_id).prop("disabled", true);
-        }
     });
+    window.location.reload(true);
 }
 function rmPlayer(playerNum) {}
 function pairRemote(playerNum) {}

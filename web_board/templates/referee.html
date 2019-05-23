@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
-    <script src="/dist/bundle.js?11" type="text/javascript"></script>
+    <script src="/dist/bundle.js?20" type="text/javascript"></script>
     <link href="/dist/main.css" rel='stylesheet' type='text/css' />
     <script>
      $(document).ready(function () {
@@ -328,7 +328,7 @@
               {% for player in pregistry.values() %}
                 {% if not gstatus.tournament or
                    (gstatus.game_id is not none and player.username in gregistry[gstatus.game_id].players) %}
-                <option id="playerSelector-{{player.username}}" data="{{player.username}}" {{"disabled" if player in registered_players else ""}}>{{player.name}}</option>
+                <option id="playerSelector-{{player.username}}" data="{{player.username}}" {{"disabled" if player.username in registered_players else ""}}>{{player.name}}</option>
               {% endif %}
               {% endfor %}
             </select>
