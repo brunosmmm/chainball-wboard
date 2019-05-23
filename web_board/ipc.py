@@ -74,15 +74,16 @@ async def _ipc_call(call_type: str, **kwargs):
     return data
 
 
-def ipc_call():
+def ipc_call(**default_options):
     """IPC call.."""
 
     def wrapper(func):
         @functools.wraps(func)
         async def wrapped(**kwargs):
             # Some fancy boo stuff
-            data = await _ipc_call(func.__name__, **kwargs)
-            ret = await func(data=data, **kwargs)
+            default_options.update(kwargs)
+            data = await _ipc_call(func.__name__, **default_options)
+            ret = await func(data=data, **default_options)
             if ret is None:
                 return data
 
@@ -123,8 +124,8 @@ class ScoreboardIPCClient:
         """Get tournament status."""
 
     @staticmethod
-    @ipc_call()
-    async def activate_tournament(tournament_id: int = 0, **kwargs):
+    @ipc_call(tournament_id=0)
+    async def activate_tournament(**kwargs):
         """Activate tournament."""
 
     @staticmethod
@@ -143,8 +144,8 @@ class ScoreboardIPCClient:
         """Update registry."""
 
     @staticmethod
-    @ipc_call()
-    async def retrieve_registry(registry_id: str = "player", **kwargs):
+    @ipc_call(registry_id="player")
+    async def retrieve_registry(**kwargs):
         """Retrieve registry data."""
 
     @staticmethod
@@ -158,38 +159,38 @@ class ScoreboardIPCClient:
         """Stop game."""
 
     @staticmethod
-    @ipc_call()
-    async def remote_pair(player_number: int = 0, **kwargs):
+    @ipc_call(player_number=0)
+    async def remote_pair(**kwargs):
         """Pair remote."""
 
     @staticmethod
-    @ipc_call()
-    async def remote_unpair(player_number: int = 0, **kwargs):
+    @ipc_call(player_number=0)
+    async def remote_unpair(**kwargs):
         """Unpair remote."""
 
     @staticmethod
-    @ipc_call()
-    async def player_register(web_txt: str = "", panel_txt: str = "", **kwargs):
+    @ipc_call(web_txt="", panel_txt="")
+    async def player_register(**kwargs):
         """Register player."""
 
     @staticmethod
-    @ipc_call()
-    async def player_unregister(player_number: int = 0):
+    @ipc_call(player_number=0)
+    async def player_unregister(**kwargs):
         """Unregister player."""
 
     @staticmethod
-    @ipc_call()
-    async def score_event(evt_type: str = "", player_num: int = 0, **kwargs):
+    @ipc_call(evt_type="", player_num=0)
+    async def score_event(**kwargs):
         """Scoring event."""
 
     @staticmethod
-    @ipc_call()
-    async def set_turn(player_num: int = 0, **kwargs):
+    @ipc_call(player_num=0)
+    async def set_turn(**kwargs):
         """Set turn."""
 
     @staticmethod
-    @ipc_call()
-    async def set_score(player_num: int = 0, score: int = 0, **kwargs):
+    @ipc_call(player_num=0, score=0)
+    async def set_score(**kwargs):
         """Set score."""
 
     @staticmethod
