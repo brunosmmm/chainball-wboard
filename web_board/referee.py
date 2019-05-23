@@ -211,6 +211,26 @@ async def register_player(pnum, pid):
     return jsonify(data)
 
 
+@bp.route("/control/punregister/<pnum>")
+@login_required
+async def unregister_player(pnum):
+    """Unregister player."""
+    try:
+        player_num = int(pnum)
+        if player_num < 0 or player_num > 3:
+            raise ValueError
+    except ValueError:
+        return {"status": "error", "error": "invalid player number"}
+
+    try:
+        await ipc.player_unregister(player_num=player_num)
+        data = {"status": "ok"}
+    except ScoreboardIPCError:
+        data = {"status": "error"}
+
+    return jsonify(data)
+
+
 @bp.route("/login", methods=["GET", "POST"])
 async def login():
     """Log in."""

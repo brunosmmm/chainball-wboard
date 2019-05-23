@@ -241,7 +241,13 @@ export function addPlayer() {
     });
     window.location.reload(true);
 }
-function rmPlayer(playerNum) {}
+
+export function rmPlayer(playerNum) {
+    $.ajax({
+        method: "GET",
+        url: "/control/punregister/"+playerNum
+    })
+}
 function pairRemote(playerNum) {}
 
 
