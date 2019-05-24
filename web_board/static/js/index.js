@@ -78,6 +78,7 @@ function updatePlayerNames(players) {
 
 // perform full refresh of view
 var currentGameStatus;
+var lastGameData;
 function refreshStatus()
 {
     $.ajax({
@@ -86,6 +87,7 @@ function refreshStatus()
         success: function(result) {
             if (result.status == "ok") {
                 // update status globally
+                lastGameData = result;
                 currentGameStatus = result.game;
                 // update player names
                 updatePlayerNames(result.players);
@@ -199,6 +201,14 @@ function setTurn(playerNum)
 // trigger a scoring event
 export function scoringEvt(playerNum, evtType)
 {
+    if (currentGameStatus != "started")
+    {
+        return;
+    }
+    if (!lastGameData.players[playerNum].registered || lastGameData.scores[playerNum] == -10)
+    {
+        return;
+    }
     $.ajax({
         method: "GET",
         url: "/control/event/"+playerNum+","+evtType
