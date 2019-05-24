@@ -313,8 +313,11 @@ async def set_score(pnum, score):
 
     try:
         player_num = int(pnum)
+        score = int(score)
     except ValueError:
-        return jsonify({"status": "error", "error": "invalid player id"})
+        return jsonify(
+            {"status": "error", "error": "invalid player id or score"}
+        )
 
     if player_num < 0 or player_num > 3:
         return jsonify({"status": "error", "error": "invalid player id"})
