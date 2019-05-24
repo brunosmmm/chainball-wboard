@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
-    <script src="/dist/bundle.js?28" type="text/javascript"></script>
+    <script src="/dist/bundle.js?29" type="text/javascript"></script>
     <link href="/dist/main.css" rel='stylesheet' type='text/css' />
     <script>
      $(document).ready(function () {
@@ -98,30 +98,46 @@
                 <div class="container">
                   <div class="row mb-1">
                     <div class="col-3">
-                      <button type="button" class="btn btn-danger btn-block btn-sm" id="p{{pnum}}Evt0">DF</button>
+                        <button type="button" class="btn btn-danger btn-block btn-sm"
+                                id="p{{pnum}}Evt0"
+                                onclick="chainbot.scoringEvt({{pnum}},'doublefault')">DF</button>
                     </div>
                     <div class="col-3">
-                      <button type="button" class="btn btn-danger btn-block btn-sm" id="p{{pnum}}Evt1">SM</button>
+                        <button type="button" class="btn btn-danger btn-block btn-sm"
+                                id="p{{pnum}}Evt1"
+                                onclick="chainbot.scoringEvt({{pnum}}, 'sailormoon')">SM</button>
                     </div>
                     <div class="col-3">
-                      <button type="button" class="btn btn-warning btn-block btn-sm" id="p{{pnum}}Evt2">SH</button>
+                        <button type="button" class="btn btn-warning btn-block btn-sm"
+                                id="p{{pnum}}Evt2"
+                                onclick="chainbot.scoringEvt({{pnum}}, 'selfhit')">SH</button>
                     </div>
                     <div class="col-3">
-                      <button type="button" class="btn btn-warning btn-block btn-sm" id="p{{pnum}}Evt3">MS</button>
+                        <button type="button" class="btn btn-warning btn-block btn-sm"
+                                id="p{{pnum}}Evt3"
+                                onclick="chainbot.scoringEvt({{pnum}}, 'mudskipper')">MS</button>
                     </div>
                   </div>
                   <div class="row">
                     <div class="col-3">
-                      <button type="button" class="btn btn-warning btn-block btn-sm" id="p{{pnum}}Evt4">SP</button>
+                        <button type="button" class="btn btn-warning btn-block btn-sm"
+                                id="p{{pnum}}Evt4"
+                                onclick="chainbot.scoringEvt({{pnum}}, 'slowpoke')">SP</button>
                     </div>
                     <div class="col-3">
-                      <button type="button" class="btn btn-secondary btn-block btn-sm" id="p{{pnum}}Evt5">DB</button>
+                        <button type="button" class="btn btn-secondary btn-block btn-sm"
+                                id="p{{pnum}}Evt5"
+                                onclick="chainbot.scoringEvt({{pnum}}, 'deadball')">DB</button>
                     </div>
                     <div class="col-3">
-                      <button type="button" class="btn btn-success btn-block btn-sm" id="p{{pnum}}Evt6">CB</button>
+                        <button type="button" class="btn btn-success btn-block btn-sm"
+                                id="p{{pnum}}Evt6"
+                                onclick="chainbot.scoringEvt({{pnum}}, 'chainball')">CB</button>
                     </div>
                     <div class="col-3">
-                      <button type="button" class="btn btn-success btn-block btn-sm" id="p{{pnum}}Evt7">JB</button>
+                        <button type="button" class="btn btn-success btn-block btn-sm"
+                                id="p{{pnum}}Evt7"
+                                onclick="chainbot.scoringEvt({{pnum}}, 'jailbreak')">JB</button>
                     </div>
                   </div>
                 </div>

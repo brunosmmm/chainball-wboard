@@ -264,6 +264,26 @@ async def login():
     return await render_template("login.html", form=form)
 
 
+@bp.route("/control/event/<pnum>,<evt>")
+@login_required
+async def event(pnum, evt):
+    """Event."""
+    try:
+        player_num = int(pnum)
+    except ValueError:
+        data = {"status": "error", "error": "invalid player id"}
+
+    if player_num < 0 or player_num > 3:
+        data = {"status": "error", "error": "invalid player id"}
+
+    try:
+        await ipc.score_event(player_num=player_num, evt_type=evt)
+        data = {"status": "ok"}
+    except ScoreboardIPCError:
+        data = {"status": "error"}
+    return jsonify(data)
+
+
 @bp.route("/logout")
 @login_required
 def logout():

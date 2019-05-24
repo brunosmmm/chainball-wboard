@@ -197,11 +197,11 @@ function setTurn(playerNum)
 
 
 // trigger a scoring event
-function scoringEvt(playerNum, evtType)
+export function scoringEvt(playerNum, evtType)
 {
     $.ajax({
         method: "GET",
-        url: "/control/scoreevt/"+playerNum+","+evtType
+        url: "/control/event/"+playerNum+","+evtType
     });
 }
 
