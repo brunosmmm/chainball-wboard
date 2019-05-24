@@ -65,29 +65,29 @@
                 <p class="text-center font-weight-bolder">Events</p>
               </div>
             </div>
+            {% for pnum in range(0,4) %}
             <div class="row mb-3">
-              <!-- TODO put template here -->
               <div class="col-3">
                 <div class="btn-group btn-block">
-                  <button type="button" class="btn btn-primary btn-block" id="pline-0" onclick="pnameClick(0)"></button>
-                  <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="pline-0-drop">
+                  <button type="button" class="btn btn-primary btn-block" id="pline-{{pnum}}" onclick="pnameClick({{pnum}})"></button>
+                  <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="pline-{{pnum}}-drop">
                     <span class="sr-only">Toggle Dropdown</span>
                   </button>
                   <div class="dropdown-menu">
-                    {% if not pstatus["0"].registered %}
-                      <a id="player-add-0" class="dropdown-item" href="#" data-toggle="modal" data-target="#playerAddModal" data-playernum="0">Add Player</a>
+                    {% if not pstatus[pnum|string].registered %}
+                      <a id="player-add-0" class="dropdown-item" href="#" data-toggle="modal" data-target="#playerAddModal" data-playernum="{{pnum}}">Add Player</a>
                     {% else %}
-                      <a id="player-add-0" class="dropdown-item" href="#" onclick="chainbot.rmPlayer(0)">Remove Player</a>
+                      <a id="player-add-{{pnum}}" class="dropdown-item" href="#" onclick="chainbot.rmPlayer({{pnum}})">Remove Player</a>
                       {% endif %}
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item disabled" href="#" onclick="pairRemote(0)">Pair Remote</a>
+                    <a class="dropdown-item disabled" href="#" onclick="pairRemote({{pnum}})">Pair Remote</a>
                   </div>
                 </div>
               </div>
               <div class="col-2">
                 <div class="dropdown">
-                  <button type="button" class="btn btn-block btn-primary dropdown-toggle" id="scoreDropdownBtn0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="pscore-0">0</button>
-                  <div class="dropdown-menu" aria-labelledby="scoreDropdownBtn0">
+                  <button type="button" class="btn btn-block btn-primary dropdown-toggle" id="scoreDropdownBtn{{pnum}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="pscore-{{pnum}}">0</button>
+                  <div class="dropdown-menu" aria-labelledby="scoreDropdownBtn{{pnum}}">
                     {% for i in range(-10, 6) %}
                     <a class="dropdown-item" href="#">{{i}}</a>
                     {% endfor %}
@@ -98,221 +98,36 @@
                 <div class="container">
                   <div class="row mb-1">
                     <div class="col-3">
-                      <button type="button" class="btn btn-danger btn-block btn-sm" id="p0Evt0">DF</button>
+                      <button type="button" class="btn btn-danger btn-block btn-sm" id="p{{pnum}}Evt0">DF</button>
                     </div>
                     <div class="col-3">
-                      <button type="button" class="btn btn-danger btn-block btn-sm" id="p0Evt1">SM</button>
+                      <button type="button" class="btn btn-danger btn-block btn-sm" id="p{{pnum}}Evt1">SM</button>
                     </div>
                     <div class="col-3">
-                      <button type="button" class="btn btn-warning btn-block btn-sm" id="p0Evt2">SH</button>
+                      <button type="button" class="btn btn-warning btn-block btn-sm" id="p{{pnum}}Evt2">SH</button>
                     </div>
                     <div class="col-3">
-                      <button type="button" class="btn btn-warning btn-block btn-sm" id="p0Evt3">MS</button>
+                      <button type="button" class="btn btn-warning btn-block btn-sm" id="p{{pnum}}Evt3">MS</button>
                     </div>
                   </div>
                   <div class="row">
                     <div class="col-3">
-                      <button type="button" class="btn btn-warning btn-block btn-sm" id="p0Evt4">SP</button>
+                      <button type="button" class="btn btn-warning btn-block btn-sm" id="p{{pnum}}Evt4">SP</button>
                     </div>
                     <div class="col-3">
-                      <button type="button" class="btn btn-secondary btn-block btn-sm" id="p0Evt5">DB</button>
+                      <button type="button" class="btn btn-secondary btn-block btn-sm" id="p{{pnum}}Evt5">DB</button>
                     </div>
                     <div class="col-3">
-                      <button type="button" class="btn btn-success btn-block btn-sm" id="p0Evt6">CB</button>
+                      <button type="button" class="btn btn-success btn-block btn-sm" id="p{{pnum}}Evt6">CB</button>
                     </div>
                     <div class="col-3">
-                      <button type="button" class="btn btn-success btn-block btn-sm" id="p0Evt7">JB</button>
+                      <button type="button" class="btn btn-success btn-block btn-sm" id="p{{pnum}}Evt7">JB</button>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="row mb-3">
-              <!-- TODO put template here -->
-              <div class="col-3">
-                <div class="btn-group btn-block">
-                  <button type="button" class="btn btn-primary btn-block" id="pline-1" onclick="pnameClick(1)"></button>
-                  <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="pline-1-drop">
-                    <span class="sr-only">Toggle Dropdown</span>
-                  </button>
-                  <div class="dropdown-menu">
-                      {% if not pstatus["1"].registered %}
-                      <a id="player-add-1" class="dropdown-item" href="#" data-toggle="modal" data-target="#playerAddModal" data-playernum="1">Add Player</a>
-                      {% else %}
-                      <a id="player-add-1" class="dropdown-item" href="#" onclick="chainbot.rmPlayer(1)">Remove Player</a>
-                    {% endif %}
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item disabled" href="#" onclick="pairRemote(1)">Pair Remote</a>
-                  </div>
-                </div>
-              </div>
-              <div class="col-2">
-                <div class="dropdown">
-                  <button type="button" class="btn btn-block btn-primary dropdown-toggle" id="scoreDropdownBtn1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="pscore-1">0</button>
-                  <div class="dropdown-menu" aria-labelledby="scoreDropdownBtn1">
-                      {% for i in range(-10, 6) %}
-                      <a class="dropdown-item" href="#">{{i}}</a>
-                      {% endfor %}
-                  </div>
-                </div>
-              </div>
-              <div class="col-7">
-                <div class="container">
-                  <div class="row mb-1">
-                    <div class="col-3">
-                      <button type="button" class="btn btn-danger btn-block btn-sm" id="p1Evt0">DF</button>
-                    </div>
-                    <div class="col-3">
-                      <button type="button" class="btn btn-danger btn-block btn-sm" id="p1Evt1">SM</button>
-                    </div>
-                    <div class="col-3">
-                      <button type="button" class="btn btn-warning btn-block btn-sm" id="p1Evt2">SH</button>
-                    </div>
-                    <div class="col-3">
-                      <button type="button" class="btn btn-warning btn-block btn-sm" id="p1Evt3">MS</button>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-3">
-                      <button type="button" class="btn btn-warning btn-block btn-sm" id="p1Evt4">SP</button>
-                    </div>
-                    <div class="col-3">
-                      <button type="button" class="btn btn-secondary btn-block btn-sm" id="p1Evt5">DB</button>
-                    </div>
-                    <div class="col-3">
-                      <button type="button" class="btn btn-success btn-block btn-sm" id="p1Evt6">CB</button>
-                    </div>
-                    <div class="col-3">
-                      <button type="button" class="btn btn-success btn-block btn-sm" id="p1Evt7">JB</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="row mb-3">
-              <!-- TODO put template here -->
-              <div class="col-3">
-                <div class="btn-group btn-block">
-                  <button type="button" class="btn btn-primary btn-block" id="pline-2" onclick="pnameClick(2)"></button>
-                  <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="pline-2-drop">
-                    <span class="sr-only">Toggle Dropdown</span>
-                  </button>
-                  <div class="dropdown-menu">
-                      {% if not pstatus["2"].registered %}
-                      <a id="player-add-2" class="dropdown-item" href="#" data-toggle="modal" data-target="#playerAddModal" data-playernum="2">Add Player</a>
-                      {% else %}
-                      <a id="player-add-2" class="dropdown-item" href="#" onclick="chainbot.rmPlayer(2)">Remove Player</a>
-                    {% endif %}
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item disabled" href="#" onclick="pairRemote(2)">Pair Remote</a>
-                  </div>
-                </div>
-              </div>
-              <div class="col-2">
-                <div class="dropdown">
-                  <button type="button" class="btn btn-block btn-primary dropdown-toggle" id="scoreDropdownBtn2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="pscore-2">0</button>
-                  <div class="dropdown-menu" aria-labelledby="scoreDropdownBtn2">
-                      {% for i in range(-10, 6) %}
-                      <a class="dropdown-item" href="#">{{i}}</a>
-                      {% endfor %}
-                  </div>
-                </div>
-              </div>
-              <div class="col-7">
-                <div class="container">
-                  <div class="row mb-1">
-                    <div class="col-3">
-                      <button type="button" class="btn btn-danger btn-block btn-sm" id="p2Evt0">DF</button>
-                    </div>
-                    <div class="col-3">
-                      <button type="button" class="btn btn-danger btn-block btn-sm" id="p2Evt1">SM</button>
-                    </div>
-                    <div class="col-3">
-                      <button type="button" class="btn btn-warning btn-block btn-sm" id="p2Evt2">SH</button>
-                    </div>
-                    <div class="col-3">
-                      <button type="button" class="btn btn-warning btn-block btn-sm" id="p2Evt3">MS</button>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-3">
-                      <button type="button" class="btn btn-warning btn-block btn-sm" id="p2Evt4">SP</button>
-                    </div>
-                    <div class="col-3">
-                      <button type="button" class="btn btn-secondary btn-block btn-sm" id="p2Evt5">DB</button>
-                    </div>
-                    <div class="col-3">
-                      <button type="button" class="btn btn-success btn-block btn-sm" id="p2Evt6">CB</button>
-                    </div>
-                    <div class="col-3">
-                      <button type="button" class="btn btn-success btn-block btn-sm" id="p2Evt7">JB</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="row mb-3">
-              <!-- TODO put template here -->
-              <div class="col-3">
-                <div class="btn-group btn-block">
-                  <button type="button" class="btn btn-primary btn-block" id="pline-3" onclick="pnameClick(3)"></button>
-                  <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="pline-3-drop">
-                    <span class="sr-only">Toggle Dropdown</span>
-                  </button>
-                  <div class="dropdown-menu">
-                      {% if not pstatus["3"].registered %}
-                      <a id="player-add-3" class="dropdown-item" href="#" data-toggle="modal" data-target="#playerAddModal" data-playernum="3">Add Player</a>
-                      {% else %}
-                      <a id="player-add-3" class="droopdown-item" href="#" onclick="chainbot.rmPlayer(3)">Remove Player</a>
-                      {% endif %}
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item disabled" href="#" onclick="pairRemote(3)">Pair Remote</a>
-                  </div>
-                </div>
-              </div>
-              <div class="col-2">
-                <div class="dropdown">
-                  <button type="button" class="btn btn-block btn-primary dropdown-toggle" id="scoreDropdownBtn3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="pscore-3">0</button>
-                  <div class="dropdown-menu" aria-labelledby="scoreDropdownBtn3">
-                      {% for i in range(-10, 6) %}
-                      <a class="dropdown-item" href="#">{{i}}</a>
-                      {% endfor %}
-                  </div>
-                </div>
-              </div>
-              <div class="col-7">
-                <div class="container">
-                  <div class="row mb-1">
-                    <div class="col-3">
-                      <button type="button" class="btn btn-danger btn-block btn-sm" id="p3Evt0">DF</button>
-                    </div>
-                    <div class="col-3">
-                      <button type="button" class="btn btn-danger btn-block btn-sm" id="p3Evt1">SM</button>
-                    </div>
-                    <div class="col-3">
-                      <button type="button" class="btn btn-warning btn-block btn-sm" id="p3Evt2">SH</button>
-                    </div>
-                    <div class="col-3">
-                      <button type="button" class="btn btn-warning btn-block btn-sm" id="p3Evt3">MS</button>
-                    </div>
-                  </div>
-                  <div class="row mb-1">
-                    <div class="col-3">
-                      <button type="button" class="btn btn-warning btn-block btn-sm" id="p3Evt4">SP</button>
-                    </div>
-                    <div class="col-3">
-                      <button type="button" class="btn btn-secondary btn-block btn-sm" id="p3Evt5">DB</button>
-                    </div>
-                    <div class="col-3">
-                      <button type="button" class="btn btn-success btn-block btn-sm" id="p3Evt6">CB</button>
-                    </div>
-                    <div class="col-3">
-                      <button type="button" class="btn btn-success btn-block btn-sm" id="p3Evt7">JB</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            {% endfor %}
     </div>
       <nav class="navbar fixed-bottom navbar-dark bg-primary">
         <div class="btn-group" role="group" aria-label="Basic example">
