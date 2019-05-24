@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
-    <script src="/dist/bundle.js?33" type="text/javascript"></script>
+    <script src="/dist/bundle.js?34" type="text/javascript"></script>
     <link href="/dist/main.css" rel='stylesheet' type='text/css' />
     <script>
      $(document).ready(function () {
@@ -95,7 +95,7 @@
                   <button type="button" class="btn btn-block btn-primary dropdown-toggle" id="scoreDropdownBtn{{pnum}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">0</button>
                   <div class="dropdown-menu" aria-labelledby="scoreDropdownBtn{{pnum}}">
                     {% for i in range(-10, 6) %}
-                    <a class="dropdown-item" href="#">{{i}}</a>
+                    <a class="dropdown-item" href="#" onclick="setScore({{pnum}}, {{i}})">{{i}}</a>
                     {% endfor %}
                   </div>
                 </div>

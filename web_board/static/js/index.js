@@ -203,6 +203,23 @@ export function setTurn(playerNum)
     });
 }
 
+// set score manually
+export function setScore(playerNum, score)
+{
+    if (currentGameStatus != "started")
+    {
+        return;
+    }
+    if (!lastGameData.players[playerNum].registered || lastGameData.scores[playerNum] == -10)
+    {
+        return;
+    }
+    $.ajax({
+        method: "GET",
+        url: "/control/setscore/"+playerNum+","+score
+    });
+}
+
 
 // trigger a scoring event
 export function scoringEvt(playerNum, evtType)

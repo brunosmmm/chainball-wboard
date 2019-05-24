@@ -201,7 +201,7 @@ async def register_player(pnum, pid):
         if player_num < 0 or player_num > 3:
             raise ValueError
     except ValueError:
-        return {"status": "error", "error": "invalid player number"}
+        return jsonify({"status": "error", "error": "invalid player number"})
 
     try:
         await ipc.player_register(username=pid, player_num=player_num)
@@ -221,7 +221,7 @@ async def unregister_player(pnum):
         if player_num < 0 or player_num > 3:
             raise ValueError
     except ValueError:
-        return {"status": "error", "error": "invalid player number"}
+        return jsonify({"status": "error", "error": "invalid player number"})
 
     try:
         await ipc.player_unregister(player_number=player_num)
@@ -271,10 +271,10 @@ async def event(pnum, evt):
     try:
         player_num = int(pnum)
     except ValueError:
-        data = {"status": "error", "error": "invalid player id"}
+        return jsonify({"status": "error", "error": "invalid player id"})
 
     if player_num < 0 or player_num > 3:
-        data = {"status": "error", "error": "invalid player id"}
+        return jsonify({"status": "error", "error": "invalid player id"})
 
     try:
         await ipc.score_event(player_num=player_num, evt_type=evt)
@@ -292,13 +292,38 @@ async def set_turn(pnum):
     try:
         player_num = int(pnum)
     except ValueError:
-        data = {"status": "error", "error": "invalid player id"}
+        return jsonify({"status": "error", "error": "invalid player id"})
 
     if player_num < 0 or player_num > 3:
-        data = {"status": "error", "error": "invalid player id"}
+        return jsonify({"status": "error", "error": "invalid player id"})
 
     try:
         await ipc.set_turn(player_num=player_num)
+        data = {"status": "ok"}
+    except ScoreboardIPCError:
+        data = {"status": "error"}
+
+    return jsonify(data)
+
+
+@bp.route("/control/setscore/<pnum>,<score>")
+@login_required
+async def set_score(pnum, score):
+    """Set score manually."""
+
+    try:
+        player_num = int(pnum)
+    except ValueError:
+        return jsonify({"status": "error", "error": "invalid player id"})
+
+    if player_num < 0 or player_num > 3:
+        return jsonify({"status": "error", "error": "invalid player id"})
+
+    if score < -10 or score > 5:
+        return jsonify({"status": "error", "error": "invalid score"})
+
+    try:
+        await ipc.set_score(player_num=player_num, score=score)
         data = {"status": "ok"}
     except ScoreboardIPCError:
         data = {"status": "error"}
