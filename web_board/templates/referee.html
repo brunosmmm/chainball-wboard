@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
-    <script src="/dist/bundle.js?32" type="text/javascript"></script>
+    <script src="/dist/bundle.js?33" type="text/javascript"></script>
     <link href="/dist/main.css" rel='stylesheet' type='text/css' />
     <script>
      $(document).ready(function () {
@@ -69,15 +69,21 @@
             <div class="row mb-3">
               <div class="col-3">
                 <div class="btn-group btn-block">
-                  <button type="button" class="btn btn-primary btn-block" id="pline-{{pnum}}" onclick="pnameClick({{pnum}})"></button>
-                  <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="pline-{{pnum}}-drop">
+                    <button type="button" class="btn btn-primary btn-block"
+                            id="pline-{{pnum}}"
+                            onclick="chainbot.setTurn({{pnum}})"></button>
+                    <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split"
+                            data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false" id="pline-{{pnum}}-drop">
                     <span class="sr-only">Toggle Dropdown</span>
                   </button>
                   <div class="dropdown-menu">
                     {% if not pstatus[pnum|string].registered %}
-                      <a id="player-add-0" class="dropdown-item" href="#" data-toggle="modal" data-target="#playerAddModal" data-playernum="{{pnum}}">Add Player</a>
+                      <a id="player-add-0" class="dropdown-item" href="#" data-toggle="modal"
+                         data-target="#playerAddModal" data-playernum="{{pnum}}">Add Player</a>
                     {% else %}
-                      <a id="player-add-{{pnum}}" class="dropdown-item" href="#" onclick="chainbot.rmPlayer({{pnum}})">Remove Player</a>
+                      <a id="player-add-{{pnum}}" class="dropdown-item" href="#"
+                         onclick="chainbot.rmPlayer({{pnum}})">Remove Player</a>
                       {% endif %}
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item disabled" href="#" onclick="pairRemote({{pnum}})">Pair Remote</a>

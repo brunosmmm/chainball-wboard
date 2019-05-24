@@ -284,9 +284,30 @@ async def event(pnum, evt):
     return jsonify(data)
 
 
+@bp.route("/control/setturn/<pnum>")
+@login_required
+async def set_turn(pnum):
+    """Set turn manually."""
+
+    try:
+        player_num = int(pnum)
+    except ValueError:
+        data = {"status": "error", "error": "invalid player id"}
+
+    if player_num < 0 or player_num > 3:
+        data = {"status": "error", "error": "invalid player id"}
+
+    try:
+        await ipc.set_turn(player_num=player_num)
+        data = {"status": "ok"}
+    except ScoreboardIPCError:
+        data = {"status": "error"}
+    return jsonify(data)
+
+
 @bp.route("/logout")
 @login_required
-def logout():
+async def logout():
     """Log out."""
     username = current_app.user_class.get_currently_authenticated()
     user = current_app.user_class.get(username)

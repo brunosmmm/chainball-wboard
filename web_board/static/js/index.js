@@ -189,11 +189,19 @@ function setScore(player, score, serving)
 }
 
 // set turn manually
-function setTurn(playerNum)
+export function setTurn(playerNum)
 {
+    if (currentGameStatus != "started")
+    {
+        return;
+    }
+    if (!lastGameData.players[playerNum].registered || lastGameData.scores[playerNum] == -10)
+    {
+        return;
+    }
     $.ajax({
         method: "GET",
-        url: "/debug/setturn/"+playerNum
+        url: "/control/setturn/"+playerNum
     });
 }
 
@@ -233,17 +241,6 @@ function enableControls(playerNum)
     for (evt = 0; evt < 8; evt++) {
         $("#p"+playerNum+"Evt"+evt).removeClass("disabled");
         $("#scoreDropdownBtn"+playerNum).removeClass("disabled");
-    }
-}
-
-// handle click on player button
-export function pnameClick(playerNum) {
-    if (currentGameStatus == "stopped") {
-        // add or remove player etc
-
-    } else {
-        // set turn
-        $.ajax({method: "GET", url: "/debug/setturn/"+playerNum});
     }
 }
 
