@@ -108,7 +108,6 @@ async def referee_index():
         gregistry = {game["identifier"]: game for game in gregistry}
         tregistry = {tournament["id"]: tournament for tournament in tregistry}
 
-    print(pstatus)
     return await render_template(
         "referee.html",
         pregistry=pregistry,
