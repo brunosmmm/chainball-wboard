@@ -141,6 +141,8 @@ function refreshStatus()
                         disableControls(p);
                         // enable dropdowns in player names
                         $("#pline-"+p+"-drop").removeClass("disabled");
+                        $("#pline-"+p).removeClass("btn-danger");
+                        $("#pline-"+p+"-drop").removeClass("btn-danger");
                     }
                     $("#game-stop-btn").addClass("disabled");
                     $("#game-pause-btn").addClass("disabled");
