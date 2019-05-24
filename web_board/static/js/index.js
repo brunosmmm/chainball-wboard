@@ -70,11 +70,16 @@ export function activateTournament(){
 export function deactivateTournament(){
     $.ajax({method: "GET", url: "/control/deactivateTournament"});
 }
+
+// retrieve current player names
+function updatePlayerNames(players) {
+    $.each(players, function(key, val) { $("#pline-"+key).text(val.web_txt); });
+}
+
 // perform full refresh of view
 var currentGameStatus;
 function refreshStatus()
 {
-    getPlayerNames();
     $.ajax({
         method: "GET",
         url: "/status/game",
@@ -82,6 +87,8 @@ function refreshStatus()
             if (result.status == "ok") {
                 // update status globally
                 currentGameStatus = result.game;
+                // update player names
+                updatePlayerNames(result.players);
                 // manage tournament toggler
                 if (!result.tournament)
                 {
@@ -154,15 +161,6 @@ function refreshStatus()
     });
 }
 
-// retrieve current player names
-function getPlayerNames() {
-    $.ajax({
-        method: "GET",
-        url: "/status/players",
-        success: function(result) {
-            $.each(result, function(key, val) { $("#pline-"+key).text(val.web_txt); });
-        }});
-}
 
 
 // refresh score in view
