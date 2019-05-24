@@ -77,7 +77,7 @@
                     {% if not pstatus["0"].registered %}
                       <a id="player-add-0" class="dropdown-item" href="#" data-toggle="modal" data-target="#playerAddModal" data-playernum="0">Add Player</a>
                     {% else %}
-                      <a class="dropdown-item" href="#" onclick="chainbot.rmPlayer(0)">Remove Player</a>
+                      <a id="player-add-0" class="dropdown-item" href="#" onclick="chainbot.rmPlayer(0)">Remove Player</a>
                       {% endif %}
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item disabled" href="#" onclick="pairRemote(0)">Pair Remote</a>
@@ -139,7 +139,7 @@
                       {% if not pstatus["1"].registered %}
                       <a id="player-add-1" class="dropdown-item" href="#" data-toggle="modal" data-target="#playerAddModal" data-playernum="1">Add Player</a>
                       {% else %}
-                    <a class="dropdown-item" href="#" onclick="chainbot.rmPlayer(1)">Remove Player</a>
+                      <a id="player-add-1" class="dropdown-item" href="#" onclick="chainbot.rmPlayer(1)">Remove Player</a>
                     {% endif %}
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item disabled" href="#" onclick="pairRemote(1)">Pair Remote</a>
@@ -201,7 +201,7 @@
                       {% if not pstatus["2"].registered %}
                       <a id="player-add-2" class="dropdown-item" href="#" data-toggle="modal" data-target="#playerAddModal" data-playernum="2">Add Player</a>
                       {% else %}
-                    <a class="dropdown-item" href="#" onclick="chainbot.rmPlayer(2)">Remove Player</a>
+                      <a id="player-add-2" class="dropdown-item" href="#" onclick="chainbot.rmPlayer(2)">Remove Player</a>
                     {% endif %}
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item disabled" href="#" onclick="pairRemote(2)">Pair Remote</a>
@@ -263,7 +263,7 @@
                       {% if not pstatus["3"].registered %}
                       <a id="player-add-3" class="dropdown-item" href="#" data-toggle="modal" data-target="#playerAddModal" data-playernum="3">Add Player</a>
                       {% else %}
-                      <a class="droopdown-item" href="#" onclick="chainbot.rmPlayer(3)">Remove Player</a>
+                      <a id="player-add-3" class="droopdown-item" href="#" onclick="chainbot.rmPlayer(3)">Remove Player</a>
                       {% endif %}
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item disabled" href="#" onclick="pairRemote(3)">Pair Remote</a>
