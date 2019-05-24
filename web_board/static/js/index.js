@@ -138,6 +138,12 @@ function refreshStatus()
                     var p;
                     for (p=0;p<4;p++) {
                         $("#pline-"+p+"-drop").addClass("disabled");
+                        // disable controls if player not active in game
+                        if ((!result.players[p].registered) || (result.scores[p] == -10)) {
+                            disableControls(p);
+                            // also disable serve button
+                            $("#pline-"+p).addClass("disabled");
+                        }
                     }
 
                     $("#tournament-toggle").addClass("disabled");
@@ -149,6 +155,7 @@ function refreshStatus()
                         // enable dropdowns in player names
                         $("#pline-"+p+"-drop").removeClass("disabled");
                         $("#pline-"+p).removeClass("btn-danger");
+                        $("#pline-"+p).removeClass("disabled");
                         $("#pline-"+p+"-drop").removeClass("btn-danger");
                     }
                     $("#game-stop-btn").addClass("disabled");
