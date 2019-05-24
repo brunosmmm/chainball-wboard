@@ -129,7 +129,7 @@ function refreshStatus()
                     $.each(result.scores,
                            function(key, val) {
                                if (key != "status") {
-                                   setScore(key, val, result.serving);
+                                   updateScore(key, val, result.serving);
                                }
                            });
                     // enable pause/stop
@@ -170,10 +170,8 @@ function refreshStatus()
     });
 }
 
-
-
 // refresh score in view
-function setScore(player, score, serving)
+function updateScore(player, score, serving)
 {
     if (serving != player) {
         $("#pline-"+player).removeClass("btn-danger");
