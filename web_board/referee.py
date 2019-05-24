@@ -225,7 +225,7 @@ async def unregister_player(pnum):
         return {"status": "error", "error": "invalid player number"}
 
     try:
-        await ipc.player_unregister(player_num=player_num)
+        await ipc.player_unregister(player_number=player_num)
         data = {"status": "ok"}
     except ScoreboardIPCError:
         data = {"status": "error"}
