@@ -183,7 +183,7 @@ function setScore(player, score, serving)
         $("#pline-"+player+"-drop").addClass("btn-danger");
     }
 
-    $("#pscore-"+player).text(score);
+    $("#scoreDropdownBtn"+player).text(score);
 }
 
 // set turn manually
