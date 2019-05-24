@@ -168,10 +168,12 @@ function setScore(player, score, serving)
 {
     if (serving != player) {
         $("#pline-"+player).removeClass("btn-danger");
+        $("#pline-"+player+"-drop").removeClass("btn-danger");
     }
     else
     {
         $("#pline-"+player).addClass("btn-danger");
+        $("#pline-"+player+"-drop").addClass("btn-danger");
     }
 
     $("#pscore-"+player).text(score);
