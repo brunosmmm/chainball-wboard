@@ -333,6 +333,12 @@ async def set_score(pnum, score):
     return jsonify(data)
 
 
+@bp.route("/cbcentral/update")
+@web_ipc_call()
+async def update_registry():
+    """Update registry"""
+
+
 @bp.route("/logout")
 @login_required
 async def logout():

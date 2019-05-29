@@ -132,10 +132,35 @@ function refreshStatus()
                                    updateScore(key, val, result.serving);
                                }
                            });
+
+                    var gameStr = "";
+                    if (result.game == "started")
+                    {
+                        gameStr = "Game Started";
+                    }
+                    else
+                    {
+                        gameStr = "Game Paused";
+                    }
+
+                    if (result.game_seq != null)
+                    {
+                        gameStr += " ["+result.game_seq+"]";
+                    }
+                    $("#game-status").text(gameStr);
                     // enable pause/stop
                     $("#game-stop-btn").removeClass("disabled");
                     $("#game-pause-btn").removeClass("disabled");
                     $("#game-start-btn").addClass("disabled");
+                    $("#game-select-trigger").addClass("disabled");
+                    $("#registry-update-trigger").addClass("disabled");
+                    var minutes = Math.floor(result.remaining_time/60);
+                    var seconds = result.remaining_time - minutes*60;
+                    function str_pad_left(string,pad,length) {
+                        return (new Array(length+1).join(pad)+string).slice(-length);
+                    }
+                    var finalTime = str_pad_left(minutes,'0',2)+':'+str_pad_left(seconds,'0',2);
+                    $("#game-timer").text(finalTime);
                     // disable dropdown in player names
                     var p;
                     for (p=0;p<4;p++) {
@@ -160,9 +185,12 @@ function refreshStatus()
                         $("#pline-"+p).removeClass("disabled");
                         $("#pline-"+p+"-drop").removeClass("btn-danger");
                     }
+                    $("#game-select-trigger").removeClass("disabled");
+                    $("#registry-update-trigger").removeClass("disabled");
                     $("#game-stop-btn").addClass("disabled");
                     $("#game-pause-btn").addClass("disabled");
                     $("#tournament-toggle").removeClass("disabled");
+                    $("#game-status").text("Game not in progress");
                     canStartGame();
                 }
             }
@@ -289,7 +317,7 @@ function pairRemote(playerNum) {}
 
 // update local registry
 export function updateRegistry() {
-    $.ajax({method: "GET", url: "/persist/update"});
+    $.ajax({method: "GET", url: "/cbcentral/update"});
 }
 
 export function activateGame(){

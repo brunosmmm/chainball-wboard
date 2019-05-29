@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
-    <script src="/dist/bundle.js?34" type="text/javascript"></script>
+    <script src="/dist/bundle.js?39" type="text/javascript"></script>
     <link href="/dist/main.css" rel='stylesheet' type='text/css' />
     <script>
      $(document).ready(function () {
@@ -32,7 +32,8 @@
               Actions
             </a>
             <div class="dropdown-menu" aria-labelledby="actionsDropdown">
-              <a class="dropdown-item" href="#" onclick="chainbot.updateRegistry()">Update local registry</a>
+                <a class="dropdown-item" href="#" onclick="chainbot.updateRegistry()"
+                id="registry-update-trigger">Update local registry</a>
               <a class="dropdown-item" href="#"  id="tournament-toggle">
                 Activate tournament</a>
               <div class="dropdown-divider"></div>
@@ -45,7 +46,8 @@
               Tournament
             </a>
             <div class="dropdown-menu" aria-labelledby="tournamentDropdown">
-              <a class="dropdown-item" href="#" data-toggle="modal" data-target="#gameModal">Select game</a>
+                <a class="dropdown-item" href="#" data-toggle="modal"
+                   data-target="#gameModal" id="game-select-trigger">Select game</a>
             </div>
           </li>
         </ul>
@@ -157,7 +159,7 @@
           <button type="button" class="btn btn-secondary" id="game-pause-btn"><i class="fa fa-pause" aria-hidden="true"></i></button>
           <button type="button" class="btn btn-secondary" onclick="chainbot.stopGame()" id="game-stop-btn"><i class="fa fa-stop" aria-hidden="true"></i></button>
         </div>
-        <p class="text-right font-weight-bold text-light">00:00</p>
+        <p class="text-right font-weight-bold text-light" id="game-timer">00:00</p>
       </nav>
 	  <!--content-end-->
 
