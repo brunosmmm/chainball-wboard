@@ -124,7 +124,7 @@ function refreshStatus()
                         }
                     }
                 }
-                if (result.game != "stopped") {
+                if (result.game != "stopped" && result.game != "finished") {
                     // set scores
                     $.each(result.scores,
                            function(key, val) {
@@ -176,6 +176,31 @@ function refreshStatus()
                     $("#tournament-toggle").addClass("disabled");
                 }
                 else {
+                    if (result.game == "finished")
+                    {
+                        //update scores
+                        var high_score = -10;
+                        var winner = null;
+                        $.each(result.scores,
+                               function(key, val) {
+                                   if (key != "status") {
+                                       if (val > high_score)
+                                       {
+                                           high_score = val;
+                                           winner = key;
+                                       }
+                                       updateScore(key, val, result.serving);
+                                   }
+                               });
+                        if (winner != null)
+                        {
+                            $("#pline-"+p).addClass("btn-success");
+                        }
+                    }
+                    else
+                    {
+                        canStartGame();
+                    }
                     var p;
                     for (p=0; p<4; p++) {
                         disableControls(p);
@@ -191,7 +216,6 @@ function refreshStatus()
                     $("#game-pause-btn").addClass("disabled");
                     $("#tournament-toggle").removeClass("disabled");
                     $("#game-status").text("Game not in progress");
-                    canStartGame();
                 }
             }
         }
@@ -203,6 +227,7 @@ function updateScore(player, score, serving)
 {
     if (serving != player) {
         $("#pline-"+player).removeClass("btn-danger");
+        $("#pline-"+player).removeClass("btn-success");
         $("#pline-"+player+"-drop").removeClass("btn-danger");
     }
     else
