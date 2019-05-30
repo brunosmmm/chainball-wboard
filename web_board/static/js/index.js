@@ -76,8 +76,18 @@ function updatePlayerNames(players) {
     $.each(players, function(key, val) { $("#pline-"+key).text(val.web_txt); });
 }
 
+// update local registry
+export function updateRegistry() {
+    $.ajax({method: "GET",
+            url: "/cbcentral/update",
+            success: function() {
+                window.location.reload(true);
+            }
+           });
+}
 // perform full refresh of view
 var currentGameStatus;
+var lastGameStatus = "stopped";
 var lastGameData;
 function refreshStatus()
 {
@@ -107,6 +117,15 @@ function refreshStatus()
                 }
                 else
                 {
+                    if (lastGameStatus != currentGameStatus)
+                    {
+                        if (currentGameStatus == "stopped")
+                        {
+                            // update
+                            updateRegistry();
+                        }
+                        lastGameStatus = currentGameStatus;
+                    }
                     $("#tournament-toggle").text("Deactivate tournament");
                     $("#tournament-toggle").removeAttr("data-toggle");
                     $("#tournament-toggle").removeAttr("data-target");
@@ -340,15 +359,6 @@ export function rmPlayer(playerNum) {
 function pairRemote(playerNum) {}
 
 
-// update local registry
-export function updateRegistry() {
-    $.ajax({method: "GET",
-            url: "/cbcentral/update",
-            success: function() {
-                window.location.reload(true);
-            }
-           });
-}
 
 export function activateGame(){
     var game_id;
