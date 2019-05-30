@@ -81,7 +81,7 @@ export function updateRegistry() {
     $.ajax({method: "GET",
             url: "/cbcentral/update",
             success: function() {
-                window.location.reload(true);
+                //window.location.reload(true);
             }
            });
 }
