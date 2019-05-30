@@ -335,7 +335,7 @@ async def set_score(pnum, score):
 
 @bp.route("/cbcentral/update")
 @web_ipc_call()
-async def update_registry():
+async def update_registry(data):
     """Update registry"""
 
 
