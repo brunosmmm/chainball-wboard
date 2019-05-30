@@ -342,7 +342,12 @@ function pairRemote(playerNum) {}
 
 // update local registry
 export function updateRegistry() {
-    $.ajax({method: "GET", url: "/cbcentral/update"});
+    $.ajax({method: "GET",
+            url: "/cbcentral/update",
+            success: function() {
+                window.location.reload(true);
+            }
+           });
 }
 
 export function activateGame(){
