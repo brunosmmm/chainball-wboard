@@ -9,7 +9,7 @@ from flask_bcrypt import Bcrypt
 
 LOGIN_MANAGER = LoginManager()
 
-DEVELOP = True
+DEVELOP = False
 
 
 class User:
@@ -120,5 +120,7 @@ def create_app(test_config: Optional[str] = None):
     if DEVELOP is True:
         app.config["LOGIN_DISABLED"] = True
     LOGIN_MANAGER.init_app(app)
-
     return app
+
+
+app = create_app()
