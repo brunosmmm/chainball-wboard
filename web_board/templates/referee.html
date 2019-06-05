@@ -244,7 +244,7 @@
             <select class="form-control" id="game-selector">
               {% for game in gregistry.values() %}
               {% if gstatus.tournament_id == game["tournament"] %}
-                <option {{"disabled" if game["game_status"] != "NYET" else ""}}
+                <option {{"disabled" if (game["game_status"] != "NYET" and game["game_status"] !="NEXT") else ""}}
                         data="{{game["identifier"]}}">
                     {{game["sequence"]|string+(" [Finished]" if game["game_status"] == "DONE" else "") +(" [Live]" if game["game_status"] == "LIVE" else "")}}
                 </option>
