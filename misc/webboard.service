@@ -1,0 +1,9 @@
+[Unit]
+Description=The Chainball Scoreboard WebBoard
+After=network.target
+
+[Service]
+ExecStart=hypercorn -b localhost:80 web_board:app
+
+[Install]
+WantedBy=multi-user.target
