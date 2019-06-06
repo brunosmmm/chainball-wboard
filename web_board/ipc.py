@@ -19,7 +19,11 @@ async def receive_events():
     socket.connect("tcp://127.0.0.1:5556")
     socket.subscribe(b"")
     while True:
-        msg = await socket.recv_multipart()
+        try:
+            msg = await socket.recv_multipart()
+        except zmq.error.Again:
+            continue
+        except Exception:
         EVENT_QUEUE.append(msg)
     socket.close()
 
@@ -53,19 +57,24 @@ async def _ipc_call(call_type: str, **kwargs):
         json_data = json.dumps((call_type, kwargs))
         await socket.send_multipart([json_data.encode()])
     except zmq.ZMQError:
+        socket.close()
         raise ScoreboardIPCError("could not call server")
     except zmq.error.Again:
         # timeout
+        socket.close()
         raise ScoreboardIPCTimeoutError("connection timed out")
     # get response
     try:
         recv_data = await socket.recv_multipart()
         status, data = json.loads(recv_data[0].decode())
     except zmq.ZMQError:
+        socket.close()
         raise ScoreboardIPCError("could not receive data from server")
     except (json.JSONDecodeError, TypeError):
+        socket.close()
         raise ScoreboardIPCError("received malformed response")
     except zmq.error.Again:
+        socket.close()
         raise ScoreboardIPCTimeoutError("connection timed out")
     socket.close()
     if status != "ok":
