@@ -24,6 +24,7 @@ async def receive_events():
         except zmq.error.Again:
             continue
         except Exception:
+            continue
         EVENT_QUEUE.append(msg)
     socket.close()
 
